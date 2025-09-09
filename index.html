@@ -1,3 +1,218 @@
-<H2>> В данный момент на сайте проводятся технические работы!</H2>
-<H2>> // </H2>
-<H2>> shpekers.ru </H2>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Дальше лучше</title>
+<style>
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg,#fefbd8,#ffe4b5);
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    background-color: #fffacd;
+    padding: 50px;
+    border: 5px dashed #ff4500;
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.3);
+    width: 750px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: float 5s ease-in-out infinite alternate;
+    text-align: center;
+}
+
+@keyframes float { 0% { transform: translate(-50%, -50%) translateY(0); } 100% { transform: translate(-50%, -50%) translateY(-10px); } }
+
+h1 {
+    font-size: 50px;
+    color: #ff0000;
+    text-shadow: 2px 2px #ffff00;
+    margin: 0 0 20px 0;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+
+h2 { font-size: 36px; color: #008800; margin: 0 0 20px 0; }
+
+.blink { color: #ff00ff; font-weight: bold; font-size: 24px; animation: blink 0.7s step-start infinite; margin: 10px 0; }
+@keyframes blink { 50% { opacity:0; } }
+
+.fun-text { font-size: 18px; color: #555555; margin: 10px 0; } /* более темный текст */
+
+.button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #00ccff;
+    border: 3px dotted #ff00aa;
+    color: #000080;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-block;
+    animation: shake 3s infinite;
+}
+
+.button:hover { background-color: #ff00aa; color: #ffffff; }
+
+@keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(2deg); } 50% { transform: rotate(-2deg); } 75% { transform: rotate(1deg); } 100% { transform: rotate(0deg); } }
+
+.time { margin-top: 20px; font-size: 16px; color: #333; }
+
+.corner-text { position: absolute; font-size: 14px; color: #ff0000; font-weight: bold; top: 5px; right: 10px; animation: blink 1s step-start infinite; }
+
+.fly-text {
+    position: fixed;  
+    white-space: nowrap;
+    font-size: 20px;
+    font-weight: bold;
+    pointer-events: none;
+    user-select: none;
+    color: #222222;
+}
+
+.matrix { font-family: monospace; font-weight: bold; color:#aa5500; }
+
+#countdown {
+    font-size: 22px;
+    color: #333;
+    margin-top: 20px;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="corner-text">¯\_(ツ)_/¯</div>
+    <h1>shpekers.ru</h1>
+    <h2 class="blink">Сайт на обслуживании 😎</h2>
+
+    <p class="fun-text">Здесь могла быть полезная информация, но мне <span class="matrix" data-word="похуй">похуй</span>. 😏</p>
+    <p class="fun-text">На данный момент решаю вопросы... 💀</p>
+    <p class="fun-text">Сорян! ⚰️</p>
+
+    <div class="time" id="time"></div>
+
+    <br>
+    <a href="https://tg.me/tgshpekers" class="button">Telegram</a>
+    <a href="https://discord.gg/EgeMaBYaMY" class="button">Discord</a>
+
+    <!-- Таймер до 2030 года -->
+    <div id="countdown"></div>
+</div>
+
+<script>
+// Время в Москве
+function updateTime() {
+    const now = new Date();
+    const options = { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false };
+    document.getElementById('time').textContent = "Текущее время в Москве: " + now.toLocaleTimeString('ru-RU', options);
+}
+setInterval(updateTime,1000);
+updateTime();
+
+// Матрица для слова "похуй"
+function matrixify(el) {
+    const chars = 'ЫЦУКЕНГШЩЗХФЫВАПРОЛДЖЭЯЧСМИТЬБЮ@#$%^&*!?';
+    let word = el.getAttribute('data-word');
+    let result = '';
+    for (let i = 0; i < word.length; i++) {
+        result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    el.textContent = result;
+}
+setInterval(() => {
+    document.querySelectorAll('.matrix').forEach(el => matrixify(el));
+}, 50);
+
+// Летающие тексты
+const phrases = [
+    "Мне похуй на ваше мнение 😏",
+    "Сайт включится, когда я захочу 💀",
+    "Жду извинений 😎",
+    "Скоко, скоко, скоко? 🤷‍♂️",
+    "Степан больше не Maserati 🚔",
+    "Дырочка 🕳️",
+    "Похуй и точка. 😎",
+    "Только не Авдей ♿"
+];
+
+function createFlyingText(phrase) {
+    const container = document.createElement('div');
+    container.className = 'fly-text';
+
+    const parts = phrase.split(/(похуй)/gi);
+    parts.forEach(part => {
+        if (part.toLowerCase() === 'похуй') {
+            const span = document.createElement('span');
+            span.className = 'matrix';
+            span.setAttribute('data-word', 'похуй');
+            span.textContent = 'похуй';
+            container.appendChild(span);
+        } else {
+            container.appendChild(document.createTextNode(part));
+        }
+    });
+
+    document.body.appendChild(container);
+
+    const rect = container.getBoundingClientRect();
+    const textWidth = rect.width;
+    const textHeight = rect.height;
+
+    container.style.left = Math.random() * (window.innerWidth - textWidth) + 'px';
+    container.style.top = Math.random() * (window.innerHeight - textHeight) + 'px';
+
+    let dx = (Math.random() - 0.5) * 4;
+    let dy = (Math.random() - 0.5) * 4;
+
+    function move() {
+        const rect = container.getBoundingClientRect();
+        let x = rect.left + dx;
+        let y = rect.top + dy;
+
+        if (x <= 0 || x + rect.width >= window.innerWidth) dx *= -1;
+        if (y <= 0 || y + rect.height >= window.innerHeight) dy *= -1;
+
+        container.style.left = x + 'px';
+        container.style.top = y + 'px';
+
+        requestAnimationFrame(move);
+    }
+    move();
+}
+
+phrases.forEach(phrase => createFlyingText(phrase));
+
+// Таймер до 2030 года
+function updateCountdown() {
+    const now = new Date();
+    const target = new Date('January 1, 2030 00:00:00');
+    const diff = target - now;
+
+    if (diff <= 0) {
+        document.getElementById('countdown').textContent = "Сайт уже запущен! 🎉";
+        return;
+    }
+
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const seconds = Math.floor((diff % (1000*60)) / 1000);
+
+    document.getElementById('countdown').textContent = 
+        `До запуска сайта: ${days}д ${hours}ч ${minutes}м ${seconds}с`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+</body>
+</html>
