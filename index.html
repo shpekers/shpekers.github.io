@@ -2,14 +2,8 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>shpekers.ru — Сайт на обслуживании</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дальше лучше</title>
 <style>
-/* Запрещаем темную тему */
-@media (prefers-color-scheme: dark) {
-  :root { color-scheme: light; }
-}
-
 html, body {
     height: 100%;
     margin: 0;
@@ -25,7 +19,6 @@ html, body {
     border: 5px dashed #ff4500;
     box-shadow: 5px 5px 20px rgba(0,0,0,0.3);
     width: 750px;
-    max-width: 95%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -51,7 +44,7 @@ h2 { font-size: 36px; color: #008800; margin: 0 0 20px 0; }
 .blink { color: #ff00ff; font-weight: bold; font-size: 24px; animation: blink 0.7s step-start infinite; margin: 10px 0; }
 @keyframes blink { 50% { opacity:0; } }
 
-.fun-text { font-size: 18px; color: #555555; margin: 10px 0; }
+.fun-text { font-size: 18px; color: #555555; margin: 10px 0; } /* более темный текст */
 
 .button {
     margin: 10px;
@@ -93,20 +86,6 @@ h2 { font-size: 36px; color: #008800; margin: 0 0 20px 0; }
     margin-top: 20px;
     font-weight: bold;
 }
-
-/* Для маленьких экранов */
-@media screen and (max-width: 480px) {
-    .container { padding: 30px; }
-    h1 { font-size: 36px; }
-    h2 { font-size: 28px; }
-    .blink { font-size: 20px; }
-    .fun-text { font-size: 16px; }
-    .button { font-size: 16px; padding: 8px 15px; }
-    .time { font-size: 14px; }
-    .corner-text { font-size: 12px; }
-    #countdown { font-size: 18px; }
-    .fly-text { font-size: 16px; }
-}
 </style>
 </head>
 <body>
@@ -125,11 +104,12 @@ h2 { font-size: 36px; color: #008800; margin: 0 0 20px 0; }
     <a href="https://tg.me/tgshpekers" class="button">Telegram</a>
     <a href="https://discord.gg/EgeMaBYaMY" class="button">Discord</a>
 
+    <!-- Таймер до 2030 года -->
     <div id="countdown"></div>
 </div>
 
 <script>
-// Время
+// Время в Москве
 function updateTime() {
     const now = new Date();
     const options = { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false };
@@ -138,7 +118,7 @@ function updateTime() {
 setInterval(updateTime,1000);
 updateTime();
 
-// Матрица
+// Матрица для слова "похуй"
 function matrixify(el) {
     const chars = 'ЫЦУКЕНГШЩЗХФЫВАПРОЛДЖЭЯЧСМИТЬБЮ@#$%^&*!?';
     let word = el.getAttribute('data-word');
@@ -148,7 +128,9 @@ function matrixify(el) {
     }
     el.textContent = result;
 }
-setInterval(() => { document.querySelectorAll('.matrix').forEach(el => matrixify(el)); }, 50);
+setInterval(() => {
+    document.querySelectorAll('.matrix').forEach(el => matrixify(el));
+}, 50);
 
 // Летающие тексты
 const phrases = [
@@ -228,6 +210,7 @@ function updateCountdown() {
     document.getElementById('countdown').textContent = 
         `До запуска сайта: ${days}д ${hours}ч ${minutes}м ${seconds}с`;
 }
+
 setInterval(updateCountdown, 1000);
 updateCountdown();
 </script>
