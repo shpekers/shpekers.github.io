@@ -1,88 +1,181 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Сайт недоступен</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shpekers — Личный сайт</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <meta name="color-scheme" content="dark">
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans selection:bg-indigo-500/30">
+
+  <!-- Хедер -->
+  <header class="bg-gray-800/90 border-b border-gray-700 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto flex justify-between items-center py-3 px-4 sm:px-6">
+      <a href="#top" class="flex items-center gap-2 sm:gap-3">
+        <img src="favicon.ico" alt="Лого" class="w-6 h-6 sm:w-8 sm:h-8">
+        <span class="text-lg sm:text-xl font-bold tracking-wide text-indigo-400">Shpekers</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-20">
+    <div class="grid gap-6 md:gap-10 md:grid-cols-2 items-center">
+      <div>
+       <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-snug text-white">
+  Привет! Я <span class="bg-gradient-to-r from-indigo-300 via-indigo-350 to-indigo-400 bg-clip-text text-transparent">Shpekers</span>
+</h1>
+
+        <p class="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-400 max-w-prose">
+          Всё значимое начинается с доступа к информации. Когда путь свободен, возможности становятся безграничными.
+        </p>
+
+        <!-- Соцсети -->
+        <div class="mt-5 flex gap-3">
+          <a href="https://t.me/tgshpekers" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 border border-indigo-600 hover:border-indigo-400 transition text-white text-sm sm:text-base">
+            <i class="fab fa-telegram"></i> Telegram
+          </a>
+          <a href="https://github.com/shpekers" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 border border-indigo-600 hover:border-indigo-400 transition text-white text-sm sm:text-base">
+            <i class="fab fa-github"></i> GitHub
+          </a>
+        </div>
+      </div>
+
+<div class="relative overflow-hidden rounded-2xl border border-gray-700 bg-gray-800/70 p-8 text-center shadow-lg max-w-lg mx-auto">
+  
+  <!-- Заголовок -->
+  <h2 class="text-2xl font-bold text-white mb-6 flex items-center justify-center gap-2">
+    Работаем за спасибо...
+  </h2>
+
+  <!-- Текст -->
+  <p class="text-gray-300 leading-relaxed mb-8">
+    Мы сохраняем сервис <span class="text-indigo-400 font-semibold">бесплатным и доступным</span> для всех пользователей, потому что ценим свободу и удобство. Если тебе нравится наша работа — поддержи нас, и вместе мы сделаем его ещё лучше!
+  </p>
+
+  <!-- Кнопка -->
+  <a href="https://www.donationalerts.com/r/shpekers" target="_blank"
+     class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 border border-indigo-600 hover:border-indigo-400 transition text-white text-sm sm:text-base">
+    <i class="fa-solid fa-hand-holding-heart"></i>
+    Поддержать проект
+  </a>
+</div>
+
+<!-- Анимация сердца -->
 <style>
-  body {
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-family:'Inter', sans-serif;
-    background:#0d1117;
-    color:#c9d1d9;
+  @keyframes heart-glow {
+    0%, 40%, 80%, 100% {
+      transform: scale(1);
+      text-shadow: 0 0 0px rgba(129,140,248,0.4);
+    }
+    20%, 60% {
+      transform: scale(1.15);
+      text-shadow: 0 0 8px rgba(129,140,248,0.9);
+    }
+  }
+  .heart-glow {
+    animation: heart-glow 1.6s infinite;
+    transform-origin: center;
+  }
+  /* ===== Chrome / Edge / Safari ===== */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
   }
 
-  .container {
-    text-align:center;
-    max-width:400px;
-    width:90%;
-    padding:30px;
-    border-radius:12px;
+  /* Трек */
+  ::-webkit-scrollbar-track {
+    background: #1f2937; /* bg-gray-800 */
+    border-radius: 10px;
   }
 
-  h1 {
-    font-size:32px;
-    color:#58a6ff;
-    margin-bottom:12px;
+  /* Ползунок */
+  ::-webkit-scrollbar-thumb {
+    background: #6366f1; /* indigo-500 */
+    border-radius: 10px;
+    border: 2px solid #1f2937; /* маленький отступ от трека */
+    transition: background 0.3s ease;
   }
 
-  .time {
-    font-weight:600;
-    color:#58a6ff;
-    margin-bottom:20px;
+  /* При наведении */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #818cf8; /* indigo-400 */
   }
 
-  p {
-    font-size:16px;
-    color:#8b949e;
-    margin-bottom:20px;
+  /* Убираем кнопки (стрелочки) */
+  ::-webkit-scrollbar-button {
+    display: none;
   }
 
-  .buttons {
-    display:flex;
-    justify-content:center;
-    gap:14px;
-    flex-wrap: wrap;
-  }
-
-  .buttons a {
-    text-decoration:none;
-    padding:12px 26px;
-    border-radius:8px;
-    font-weight:600;
-    color:#fff;
-    background:#238636;
-    transition:0.3s;
-  }
-
-  .buttons a:hover {
-    background:#2ea043;
+  /* ===== Firefox ===== */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #6366f1 #1f2937;
   }
 </style>
-</head>
-<body>
-  <div class="container">
-    <h1>ERROR</h1>
-    <div class="time" id="datetime"></div>
-    <p>Проводятся технические работы</p>
-    <div class="buttons">
-      
-      <a href="https://github.com/shpekers/paradox/raw/refs/heads/main/mysetup.exe" target="_blank">Paradox.exe</a>
-      <a href="https://t.me/tgshpekers" target="_blank">Telegram</a>
-    </div>
-  </div>
 
-  <script>
-    function updateDateTime() {
-      const now = new Date();
-      document.getElementById('datetime').innerText = now.toLocaleTimeString('ru-RU');
-    }
-    setInterval(updateDateTime, 1000);
-    updateDateTime();
-  </script>
+
+</div>
+
+
+
+  </section>
+
+  <!-- Проекты -->
+  <section id="projects" class="bg-gray-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 lg:py-12 space-y-6">
+
+      <article class="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden hover:border-indigo-400 transition flex flex-col sm:flex-row">
+        <div class="sm:w-1/3 bg-gray-700 flex items-center justify-center p-4">
+          <i class="fa-brands fa-windows text-5xl text-indigo-400"></i>
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg sm:text-xl font-semibold text-indigo-400">Paradox</h3>
+          <p class="mt-2 text-gray-400 text-sm sm:text-base flex-1">Приложение для Windows, позволяющее обходить блокировки и ограничения Discord и YouTube, сохраняя стабильное соединение и высокую скорость работы.</p>
+          <a href="https://github.com/shpekers/paradox/raw/refs/heads/main/mysetup.exe" download class="mt-4 inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white shadow-md transition text-sm sm:text-base" target="_blank">
+            <i class="fa-solid fa-download"></i> Скачать
+          </a>
+        </div>
+      </article>
+
+      <article class="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden hover:border-indigo-400 transition flex flex-col sm:flex-row">
+        <div class="sm:w-1/3 bg-gray-700 flex items-center justify-center p-4">
+          <i class="fa-brands fa-chrome text-5xl text-indigo-400"></i>
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg sm:text-xl font-semibold text-indigo-400">Paradox OneClick</h3>
+          <p class="mt-2 text-gray-400 text-sm sm:text-base flex-1">Расширение для Google Chrome, обеспечивающее быстрый и стабильный доступ к сайтам без лишних настроек.</p>
+          <a href="https://github.com/shpekers/Paradox-OneClick/releases/download/1.0/Paradox.OneClick.zip" download class="mt-4 inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white shadow-md transition text-sm sm:text-base" target="_blank">
+            <i class="fa-solid fa-download"></i> Скачать
+          </a>
+        </div>
+      </article>
+
+      <article class="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden hover:border-indigo-400 transition flex flex-col sm:flex-row">
+        <div class="sm:w-1/3 bg-gray-700 flex items-center justify-center p-4">
+          <i class="fa-solid fa-shield-halved text-5xl text-indigo-400"></i>
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg sm:text-xl font-semibold text-indigo-400">Paradox VPN</h3>
+          <p class="mt-2 text-gray-400 text-sm sm:text-base flex-1">Бесплатный VPN-сервис для всех устройств, обеспечивающий анонимность, высокую скорость и доступ к любым ресурсам без ограничений.</p>
+          <a href="start-paradox-vpn.php"class="mt-4 inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white shadow-md transition text-sm sm:text-base" target="_blank">
+            <i class="fa-solid fa-file-lines"></i> Подробнее
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Футер -->
+  <footer class="bg-gray-900 text-gray-500">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 text-center text-xs sm:text-sm">
+      2025 Shpekers
+    </div>
+  </footer>
+
 </body>
 </html>

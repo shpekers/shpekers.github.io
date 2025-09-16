@@ -1,0 +1,4 @@
+vless://df0680ca-e43c-498d-ed86-8e196eedd012@185.231.205.5:8880?encryption=none&security=none&type=grpc#Paradox | Франция
+vless://e4824193-4f54-453b-d037-88368e85ef0e@public15v7.fastipsport.com:8880?encryption=none&security=none&type=grpc#Paradox | США
+vless://4b9063e0-3288-44e9-9aac-80fbfce323a0@83.222.23.81:38065?encryption=none&security=reality&sni=yahoo.com&fp=chrome&pbk=dSSDPTK6AHfAdRAXD9i4rzqcNIY65RxlF25UyCKdiyo&sid=fa&type=tcp&headerType=none#Paradox | Казахстан
+vless://0cc9d390-42ee-461e-94ae-e4370883dc48@77.73.238.191:29505?encryption=none&security=none&type=ws&path=%2F#Paradox | Латвия

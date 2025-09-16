@@ -1,0 +1,2 @@
+User-agent: * 
+Sitemap: http://shpekers.ru/sitemap.xml

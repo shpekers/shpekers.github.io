@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paradox VPN</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <meta name="color-scheme" content="dark">
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans selection:bg-indigo-500/30">
+<style>
+  /* ===== Chrome / Edge / Safari ===== */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Трек */
+  ::-webkit-scrollbar-track {
+    background: #1f2937; /* bg-gray-800 */
+    border-radius: 10px;
+  }
+
+  /* Ползунок */
+  ::-webkit-scrollbar-thumb {
+    background: #6366f1; /* indigo-500 */
+    border-radius: 10px;
+    border: 2px solid #1f2937; /* маленький отступ от трека */
+    transition: background 0.3s ease;
+  }
+
+  /* При наведении */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #818cf8; /* indigo-400 */
+  }
+
+  /* Убираем кнопки (стрелочки) */
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  /* ===== Firefox ===== */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #6366f1 #1f2937;
+  }
+</style>
+  <!-- Хедер -->
+  <header class="bg-gray-800/90 border-b border-gray-700 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto flex justify-between items-center py-3 px-4 sm:px-6">
+      <a href="index" class="flex items-center gap-2 sm:gap-3">
+        <img src="favicon.ico" alt="Лого" class="w-6 h-6 sm:w-8 sm:h-8">
+        <span class="text-lg sm:text-xl font-bold tracking-wide text-indigo-400">Paradox VPN</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-20">
+    <div class="grid gap-6 md:gap-10 md:grid-cols-2 items-center">
+      
+      <!-- Описание -->
+      <div>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-snug text-white">
+  Быстрый и безопасный <span class="text-indigo-400">VPN</span>
+</h1>
+        <p class="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-400 max-w-prose">
+          Подключайтесь к интернету через защищённые серверы. Доступно на Windows, Android и iOS. 
+        </p>
+      </div>
+
+      <!-- Конфиги -->
+      <div class="bg-gray-800/60 border border-gray-700 rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg">
+        <h2 class="text-center text-lg font-semibold text-indigo-400 mb-4">Конфигурация</h2>
+        <ul class="space-y-2">
+          <li class="flex justify-between items-center bg-gray-900 border border-indigo-600 rounded-lg px-4 py-2 hover:border-indigo-400 transition">
+            <span class="font-medium text-gray-200">Free</span>
+            <button onclick="copyToClipboard(this, 'https://shpekers.ru/paradox-vpn.json')" class="text-indigo-400 hover:text-indigo-300 transition">
+              <i class="fa-regular fa-copy"></i>
+            </button>
+          </li>
+        </ul>
+        <div class="mt-4 text-center">
+          <a onclick="openLink('https://www.donationalerts.com/r/shpekers')" target="_blank" 
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white shadow-md active:scale-[.99] transition text-sm sm:text-base">
+            <i class="fa-solid fa-heart"></i> Поддержать
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+<!-- Инструкция по подключению V2Ray -->
+<section id="instructions" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-gray-800">
+<h2 class="text-3xl sm:text-4xl font-extrabold text-center text-white mb-10">
+  Как подключиться к <span class="text-indigo-400">Paradox VPN</span> через <span class="text-indigo-400">V2RayTun</span>
+</h2>
+
+  <div class="grid gap-6 md:grid-cols-2">
+
+    <!-- Шаг 1 -->
+    <div class="flex items-start gap-4 bg-gray-800/50 p-6 rounded-2xl border border-gray-700 hover:border-indigo-400 transition">
+      <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-xl bg-indigo-600 text-white text-xl shadow-lg">
+        <i class="fa-solid fa-download"></i>
+      </div>
+      <div class="flex-1">
+        <h3 class="text-lg font-semibold text-white">1. Скачайте <span class="text-indigo-400">V2RayTun</span></h3>
+        <p class="text-gray-400 mt-1">Выберите версию для своей платформы и установите:</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <a onclick="openLink('https://storage.v2raytun.com/v2RayTun_Setup.exe')"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white shadow-md active:scale-[.99] transition text-sm">
+            <i class="fa-brands fa-windows"></i> Windows
+          </a>
+          <a onclick="openLink('https://play.google.com/store/apps/details?id=com.v2raytun.android')"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white shadow-md active:scale-[.99] transition text-sm">
+            <i class="fa-brands fa-android"></i> Android
+          </a>
+          <a onclick="openLink('https://apps.apple.com/en/app/v2raytun/id6476628951')"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white shadow-md active:scale-[.99] transition text-sm">
+            <i class="fa-brands fa-apple"></i> iOS
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Шаг 2 -->
+    <div class="flex items-start gap-4 bg-gray-800/50 p-6 rounded-2xl border border-gray-700 hover:border-indigo-400 transition">
+      <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-xl bg-indigo-600 text-white text-xl shadow-lg">
+        <i class="fa-regular fa-copy"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-white">2. Скопируйте <span class="text-indigo-400">конфиг</span></h3>
+        <p class="text-gray-400 mt-1">Нажмите на <i class="fa-regular fa-copy text-indigo-400"></i> рядом с конфигурацией, чтобы скопировать ссылку на подписку.</p>
+      </div>
+    </div>
+
+    <!-- Шаг 3 -->
+    <div class="flex items-start gap-4 bg-gray-800/50 p-6 rounded-2xl border border-gray-700 hover:border-indigo-400 transition">
+      <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-xl bg-indigo-600 text-white text-xl shadow-lg">
+        <i class="fa-solid fa-paste"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-white">3. Импортируйте в <span class="text-indigo-400">V2RayTun</span></h3>
+        <p class="text-gray-400 mt-1">
+          Откройте приложение → <span class="text-indigo-400">Добавить профиль</span> → <span class="text-indigo-400">Импортировать из буфера</span>.  
+          Приложение автоматически распознает ссылку.
+        </p>
+      </div>
+    </div>
+
+    <!-- Шаг 4 -->
+    <div class="flex items-start gap-4 bg-gray-800/50 p-6 rounded-2xl border border-gray-700 hover:border-indigo-400 transition">
+      <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-xl bg-indigo-600 text-white text-xl shadow-lg">
+        <i class="fa-solid fa-plug"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-white">4. Подключитесь</h3>
+        <p class="text-gray-400 mt-1">Выберите добавленный профиль и нажмите «Подключить». Ждите статуса <span class="text-green-400">Connected</span>.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mt-8 text-center text-sm text-gray-500 italic">
+    💡 Совет: если связь нестабильна — смените сервер или включите <span class="text-indigo-400">Xtls Vision</span> в настройках.
+  </div>
+</section>
+
+  <!-- Футер -->
+  <footer class="bg-gray-900 text-gray-500">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 text-center text-xs sm:text-sm">
+      2025 Paradox VPN
+    </div>
+  </footer>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    Telegram.WebApp.ready();
+
+    function copyToClipboard(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const icon = btn.querySelector("i");
+        const oldClass = icon.className;
+        icon.className = "fa-solid fa-check text-green-400";
+        setTimeout(() => {
+          icon.className = oldClass;
+        }, 2000);
+      });
+    }
+
+    function openLink(url) {
+      Telegram.WebApp.openLink(url);
+    }
+  </script>
+
+</body>
+</html>
