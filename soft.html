@@ -9,23 +9,27 @@
   <style>
     body {
       margin: 0;
-      overflow: hidden;
       background-color: #0a0a0a;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
       font-family: monospace;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      padding: 40px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     canvas {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       z-index: 0;
+      pointer-events: none;
     }
 
     .card-highlight {
@@ -34,10 +38,10 @@
       box-shadow: 0 0 20px rgba(0,0,0,0.7);
       z-index: 10;
       position: relative;
-      width: 600px;       /* ширина на ПК */
-      max-width: 95%;     /* адаптивно для мобильных */
+      width: 600px;
+      max-width: 95%;
       padding: 30px;
-      margin: 10px;
+      margin: 20px auto;
     }
 
     .project {
@@ -65,6 +69,22 @@
       opacity: 0.9;
     }
 
+    .config-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input.form-control {
+      background-color: #1c1c1c;
+      border: 1px solid #555;
+      color: #e0e0e0;
+      flex: 1;
+      min-width: 250px;
+    }
+
     .socials a {
       transition: color 0.2s, transform 0.2s;
       font-size: 1.2rem;
@@ -75,12 +95,6 @@
     .socials a:hover {
       color: #e0e0e0;
       transform: scale(1.2);
-    }
-
-    input.form-control {
-      background-color: #1c1c1c;
-      border: 1px solid #555;
-      color: #e0e0e0;
     }
 
     /* Мобильные стили */
@@ -105,9 +119,6 @@
         padding: 5px 12px;
         font-size: 0.8rem;
       }
-      .socials a {
-        font-size: 1rem;
-      }
       input.form-control {
         font-size: 0.85rem;
       }
@@ -118,44 +129,48 @@
 
 <canvas id="matrixCanvas"></canvas>
 
-<div class="card card-highlight">
-  <h1 class="fw-bold mb-4 text-center">Paradox Soft</h1>
+<div class="card card-highlight text-center">
+  <h1 class="fw-bold mb-4">Paradox Soft</h1>
 
   <!-- Paradox App -->
-  <div class="project">
+  <div class="project text-start">
     <h3>Paradox App</h3>
     <p>Приложение для Windows, позволяющее обходить блокировки и ограничения Discord и YouTube, сохраняя стабильное соединение и высокую скорость работы.</p>
     <a href="https://github.com/shpekers/paradox/raw/refs/heads/main/mysetup.exe" class="btn btn-small-square">Скачать</a>
   </div>
 
   <!-- Paradox VPN -->
-  <div class="project">
+  <div class="project text-start">
     <h3>Paradox VPN</h3>
-    <p>Бесплатный VPN-сервис для всех устройств, обеспечивающий анонимность, высокую скорость и доступ к любым ресурсам без ограничений.</p>
-    
+    <p>Бесплатный VPN-сервис для всех устройств, обеспечивающий анонимность и стабильную скорость без ограничений.</p>
     <ul class="text-secondary" style="font-size: 0.9rem; margin-bottom:10px;">
-      <li>Скачайте и установите <a href="https://v2raytun.com/#download" target="_blank" class="text-secondary text-decoration-underline">V2Ray</a> клиент.</li>
-      <li>Скопируйте URL конфигурации ниже.</li>
-      <li>Вставьте его в клиент и подключитесь.</li>
+      <li>Установите <a href="https://v2raytun.com/#download" target="_blank" class="text-secondary text-decoration-underline">V2Ray</a> клиент.</li>
+      <li>Скопируйте конфигурацию ниже и вставьте её в клиент.</li>
     </ul>
 
-    <div class="d-flex gap-2 mt-2 flex-wrap">
+    <div class="config-row">
       <input type="text" class="form-control" id="vpnConfig" value="https://shpekers.ru/paradox-vpn.json" readonly>
-      <button class="btn btn-small-square" onclick="copyConfig()">Скопировать</button>
+      <button class="btn btn-small-square" onclick="copyConfig('vpnConfig')">Скопировать</button>
     </div>
   </div>
 
+  <!-- Paradox VPN Premium -->
+  <div class="project text-start">
+    <h3>Paradox VPN Premium</h3>
+    <p>Премиум-сервера с повышенной скоростью (скоро)</p>
+  </div>
+
   <div class="d-flex justify-content-center gap-3 mt-3 socials">
-      <a href="https://t.me/tgshpekers" target="_blank"><i class="bi bi-telegram"></i></a>
-      <a href="https://github.com/shpekers" target="_blank"><i class="bi bi-github"></i></a>
-      <a href="https://shpekers.ru/discord" target="_blank"><i class="bi bi-discord"></i></a>
-      <a href="https://dalink.to/shpekers" target="_blank"><i class="bi bi-heart-fill"></i></a>
+    <a href="https://t.me/tgshpekers" target="_blank"><i class="bi bi-telegram"></i></a>
+    <a href="https://github.com/shpekers" target="_blank"><i class="bi bi-github"></i></a>
+    <a href="https://shpekers.ru/discord" target="_blank"><i class="bi bi-discord"></i></a>
+    <a href="https://dalink.to/shpekers" target="_blank"><i class="bi bi-heart-fill"></i></a>
   </div>
 </div>
 
 <script>
-function copyConfig() {
-  const config = document.getElementById('vpnConfig');
+function copyConfig(id) {
+  const config = document.getElementById(id);
   config.select();
   config.setSelectionRange(0, 99999);
   navigator.clipboard.writeText(config.value).then(() => {
@@ -173,8 +188,8 @@ function resizeCanvas() {
 resizeCanvas();
 
 const fontSize = 14;
-const columns = Math.floor(canvas.width / fontSize);
-const drops = Array(columns).fill(0);
+let columns = Math.floor(window.innerWidth / fontSize);
+let drops = Array(columns).fill(0);
 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>!@#$%^&*(){}[];:,.';
 
 function draw() {
@@ -197,6 +212,8 @@ draw();
 
 window.addEventListener('resize', () => {
   resizeCanvas();
+  columns = Math.floor(window.innerWidth / fontSize);
+  drops = Array(columns).fill(0);
 });
 </script>
 
