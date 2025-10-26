@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>shpekers</title>
+  <title>Paradox Soft</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -11,7 +11,7 @@
       margin: 0;
       overflow: hidden;
       background-color: #0a0a0a;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -34,10 +34,18 @@
       box-shadow: 0 0 20px rgba(0,0,0,0.7);
       z-index: 10;
       position: relative;
-      width: 450px;       /* ширина для ПК */
-      max-width: 90%;     /* адаптивно для мобильных */
+      width: 600px;       /* ширина на ПК */
+      max-width: 95%;     /* адаптивно для мобильных */
+      padding: 30px;
       margin: 10px;
-      padding: 1.5rem;
+    }
+
+    .project {
+      border: 1px solid #333;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      background-color: #2a2a2a;
     }
 
     .btn-small-square {
@@ -69,16 +77,28 @@
       transform: scale(1.2);
     }
 
+    input.form-control {
+      background-color: #1c1c1c;
+      border: 1px solid #555;
+      color: #e0e0e0;
+    }
+
     /* Мобильные стили */
     @media (max-width: 576px) {
       .card-highlight {
-        width: 90%;
-        padding: 1rem;
+        width: 95%;
+        padding: 15px;
       }
-      .card-title {
-        font-size: 1.4rem;
+      .project {
+        padding: 15px;
       }
-      .card-text, .text-secondary {
+      h1 {
+        font-size: 1.6rem;
+      }
+      h3 {
+        font-size: 1.2rem;
+      }
+      p, li {
         font-size: 0.9rem;
       }
       .btn-small-square {
@@ -88,8 +108,8 @@
       .socials a {
         font-size: 1rem;
       }
-      img {
-        width: 60px; /* меньше логотип на мобилках */
+      input.form-control {
+        font-size: 0.85rem;
       }
     }
   </style>
@@ -98,28 +118,51 @@
 
 <canvas id="matrixCanvas"></canvas>
 
-<div class="card text-center card-highlight shadow-sm">
-  <div class="card-body p-4">
-    <img src="https://shpekers.ru/app/logo.png" class="mb-3" width="90" alt="Paradox Logo">
-    <h1 class="card-title fw-bold mb-2">shpekers</h1>
-    <p class="card-text text-secondary mb-3">Начало большего</p>
-    <p class="text-secondary mb-4"><strong>Paradox Project</strong></p>
+<div class="card card-highlight">
+  <h1 class="fw-bold mb-4 text-center">Paradox Soft</h1>
 
-    <div class="d-flex justify-content-center gap-2 mb-3 flex-wrap">
-      <a href="soft.html" class="btn btn-small-square">Soft</a>
-      <a href="minecraft.html" class="btn btn-small-square">Minecraft</a>
+  <!-- Paradox App -->
+  <div class="project">
+    <h3>Paradox App</h3>
+    <p>Приложение для Windows, позволяющее обходить блокировки и ограничения Discord и YouTube, сохраняя стабильное соединение и высокую скорость работы.</p>
+    <a href="https://github.com/shpekers/paradox/raw/refs/heads/main/mysetup.exe" class="btn btn-small-square">Скачать</a>
+  </div>
+
+  <!-- Paradox VPN -->
+  <div class="project">
+    <h3>Paradox VPN</h3>
+    <p>Бесплатный VPN-сервис для всех устройств, обеспечивающий анонимность, высокую скорость и доступ к любым ресурсам без ограничений.</p>
+    
+    <ul class="text-secondary" style="font-size: 0.9rem; margin-bottom:10px;">
+      <li>Скачайте и установите <a href="https://v2raytun.com/#download" target="_blank" class="text-secondary text-decoration-underline">V2Ray</a> клиент.</li>
+      <li>Скопируйте URL конфигурации ниже.</li>
+      <li>Вставьте его в клиент и подключитесь.</li>
+    </ul>
+
+    <div class="d-flex gap-2 mt-2 flex-wrap">
+      <input type="text" class="form-control" id="vpnConfig" value="https://shpekers.ru/paradox-vpn.json" readonly>
+      <button class="btn btn-small-square" onclick="copyConfig()">Скопировать</button>
     </div>
+  </div>
 
-    <div class="d-flex justify-content-center gap-3 mt-2 socials">
+  <div class="d-flex justify-content-center gap-3 mt-3 socials">
       <a href="https://t.me/tgshpekers" target="_blank"><i class="bi bi-telegram"></i></a>
       <a href="https://github.com/shpekers" target="_blank"><i class="bi bi-github"></i></a>
       <a href="https://shpekers.ru/discord" target="_blank"><i class="bi bi-discord"></i></a>
       <a href="https://dalink.to/shpekers" target="_blank"><i class="bi bi-heart-fill"></i></a>
-    </div>
   </div>
 </div>
 
 <script>
+function copyConfig() {
+  const config = document.getElementById('vpnConfig');
+  config.select();
+  config.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(config.value).then(() => {
+    alert('Конфигурация скопирована!');
+  });
+}
+
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
 

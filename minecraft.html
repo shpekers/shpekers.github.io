@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paradox | Minecraft Server</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+/* Общие стили */
+body {
+  margin: 0;
+  font-family: monospace;
+  color: #e0e0e0;
+  background: url('bgmc.jpg') center/cover no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10,10,10,0.7);
+  z-index: -1;
+}
+
+/* Navbar */
+.navbar-custom {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+  background: rgba(28,28,28,0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.navbar-custom img {
+  height: 50px;
+  width: 50px;
+  border-radius: 12px;
+}
+
+.navbar-custom h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Контент */
+.container-main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 20px 40px;
+  gap: 40px;
+}
+
+/* Универсальные карточки */
+.server-card,
+.launcher-card,
+.mods-card {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(28,28,28,0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+/* Карточка статуса сервера */
+.status-text {
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.progress {
+  height: 25px;
+  border-radius: 12px;
+  background-color: #333;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background-color: #1ed760;
+  transition: width 0.5s ease-in-out;
+}
+
+/* Блок лаунчера */
+.launcher-card p {
+  margin-bottom: 15px;
+}
+
+.launcher-btn {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  background-color: #1ed760;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.launcher-btn:hover {
+  background-color: #16b34a;
+}
+
+/* Моды */
+.mods-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.mod-card {
+  background: rgba(40,40,40,0.7);
+  border-left: 4px solid #1ed760;
+  border-radius: 16px;
+  padding: 15px;
+  width: 100%;
+  max-width: 250px;
+  text-align: center;
+}
+
+/* Футер */
+footer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 25px 0;
+}
+
+footer a {
+  font-size: 1.6rem;
+  color: #888;
+  transition: transform 0.2s, color 0.2s;
+}
+
+footer a:hover {
+  color: #1ed760;
+  transform: scale(1.3);
+}
+
+/* Адаптив */
+@media(max-width:576px){
+  .navbar-custom h1 { font-size: 1.2rem; }
+  .mod-card { min-width: 100%; max-width: 100%; }
+  .server-card, .launcher-card, .mods-card { padding: 15px; }
+}
+</style>
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<!-- Navbar -->
+<div class="navbar-custom">
+  <img src="icon.ico" alt="Server Logo">
+  <h1>Paradox Minecraft Server</h1>
+</div>
+
+<div class="container-main">
+
+  <!-- Статус сервера -->
+  <div class="server-card">
+    <div class="status-text" id="serverStatus">Offline</div>
+    <div class="progress">
+      <div class="progress-bar" id="playerBar" style="width:0%"></div>
+    </div>
+    <p id="playerCount" style="margin-top:10px; font-weight:bold;">0/100 игроков</p>
+  </div>
+
+  <!-- Блок лаунчера -->
+  <div class="launcher-card">
+    <p>Скачайте наш лаунчер для установки и обновления клиента Paradox Minecraft. Лаунчер автоматически обновляет моды и клиент, упрощая процесс подключения к серверу.</p>
+    <a href="https://github.com/shpekers/paradox-minecraft/raw/refs/heads/main/launcher.exe" class="btn btn-small-square launcher-btn">Скачать лаунчер</a>
+  </div>
+
+  <!-- Моды -->
+  <div class="mods-card">
+    <div class="mod-card"><strong>OptiFine:</strong> улучшает графику и повышает FPS.</div>
+    <div class="mod-card"><strong>JEI:</strong> показывает рецепты крафта и информацию о предметах.</div>
+    <div class="mod-card"><strong>JourneyMap:</strong> мини-карта и карта мира.</div>
+    <div class="mod-card"><strong>Biomes O' Plenty:</strong> новые биомы и растения.</div>
+    <div class="mod-card"><strong>Industrial Craft:</strong> техника и автоматизация ресурсов.</div>
+    <div class="mod-card"><strong>Twilight Forest:</strong> новый измеренный мир с боссами.</div>
+  </div>
+
+</div>
+
+<!-- Футер -->
+<footer>
+  <a href="https://t.me/shpekers" target="_blank"><i class="bi bi-telegram"></i></a>
+  <a href="https://github.com/shpekers" target="_blank"><i class="bi bi-github"></i></a>
+  <a href="https://discord.gg/example" target="_blank"><i class="bi bi-discord"></i></a>
+  <a href="#" target="_blank"><i class="bi bi-youtube"></i></a>
+</footer>
+
+<script>
+async function fetchServerData() {
+  try {
+    const response = await fetch('https://api.mcsrvstat.us/2/MR.TOFFI.TOP');
+    const data = await response.json();
+
+    const statusEl = document.getElementById('serverStatus');
+    const barEl = document.getElementById('playerBar');
+    const countEl = document.getElementById('playerCount');
+
+    if (data.online) {
+      statusEl.textContent = 'Сервер онлайн';
+      statusEl.style.color = '#1ed760';
+
+      const online = data.players?.online || 0;
+      const max = data.players?.max || 100;
+      const percent = Math.min((online / max) * 100, 100);
+
+      barEl.style.width = percent + '%';
+      countEl.textContent = `${online}/${max} игроков на сервере`;
+    } else {
+      statusEl.textContent = 'Сервер оффлайн';
+      statusEl.style.color = '#ff4c4c';
+      barEl.style.width = '0%';
+      countEl.textContent = 'Сервер оффлайн';
+    }
+  } catch (e) {
+    console.error('Ошибка при получении данных:', e);
+    document.getElementById('serverStatus').textContent = 'Сервер оффлайн';
+    document.getElementById('serverStatus').style.color = '#ff4c4c';
+    document.getElementById('playerBar').style.width = '0%';
+    document.getElementById('playerCount').textContent = 'Сервер оффлайн';
+  }
+}
+
+window.onload = fetchServerData;
+setInterval(fetchServerData, 10000);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
