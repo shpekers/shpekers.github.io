@@ -9,59 +9,65 @@
   <style>
     body {
       margin: 0;
-      overflow: hidden;
       background-color: #0a0a0a;
+      font-family: monospace;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-      font-family: monospace;
     }
 
     canvas {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0;
+      z-index: -1;
     }
 
-    .card-highlight {
+    .main-block {
       background-color: #1c1c1c;
       color: #e0e0e0;
       box-shadow: 0 0 20px rgba(0,0,0,0.7);
-      z-index: 10;
-      position: relative;
-      width: 450px;       /* ширина для ПК */
-      max-width: 90%;     /* адаптивно для мобильных */
-      margin: 10px;
-      padding: 1.5rem;
+      width: 700px;
+      max-width: 95%;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
     }
 
-    .btn-small-square {
-      border-radius: 6px;
-      padding: 6px 18px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.2s ease-in-out;
-      background-color: #555;
+    .header-block {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .header-block img.logo {
+      width: 60px;
+      border-radius: 8px;
+
+    }
+
+    .header-text h1 {
+      margin: 0;
+      font-size: 2rem;
       color: #e0e0e0;
-      border: none;
     }
 
-    .btn-small-square:hover {
-      background-color: #777;
-      transform: translateY(-2px);
-      opacity: 0.9;
+    .header-text p {
+      margin: 0;
+      font-size: 1rem;
+      color: #bbb;
     }
 
     .socials a {
-      transition: color 0.2s, transform 0.2s;
       font-size: 1.2rem;
       color: #888;
-      margin: 0 4px;
+      margin: 0 5px;
+      transition: all 0.2s;
     }
 
     .socials a:hover {
@@ -69,27 +75,83 @@
       transform: scale(1.2);
     }
 
-    /* Мобильные стили */
+    .project-card {
+      background-color: #222;
+      border: 1px solid #555;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 15px;
+      text-align: center;
+      position: relative;
+    }
+
+    .project-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .project-card p {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .download-btn, .copy-config button {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      background-color: #555;
+      color: #e0e0e0;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .download-btn:hover, .copy-config button:hover {
+      background-color: #777;
+    }
+
+    .copy-config {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .copy-config input {
+      width: 60%;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: none;
+      background-color: #333;
+      color: #e0e0e0;
+      font-family: monospace;
+      text-align: center;
+    }
+
+    .config-label {
+      font-weight: 600;
+      color: #aaa;
+      font-size: 0.85rem;
+      width: 70px;
+      text-align: right;
+    }
+
     @media (max-width: 576px) {
-      .card-highlight {
-        width: 90%;
+      .main-block {
+        width: 95%;
         padding: 1rem;
-      }
-      .card-title {
-        font-size: 1.4rem;
-      }
-      .card-text, .text-secondary {
-        font-size: 0.9rem;
-      }
-      .btn-small-square {
-        padding: 5px 12px;
-        font-size: 0.8rem;
       }
       .socials a {
         font-size: 1rem;
       }
-      img {
-        width: 60px; /* меньше логотип на мобилках */
+      .copy-config input {
+        width: 50%;
+      }
+      .config-label {
+        width: 60px;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -98,28 +160,63 @@
 
 <canvas id="matrixCanvas"></canvas>
 
-<div class="card text-center card-highlight shadow-sm">
-  <div class="card-body p-4">
-    <img src="https://shpekers.ru/app/logo.png" class="mb-3" width="90" alt="Paradox Logo">
-    <h1 class="card-title fw-bold mb-2">shpekers</h1>
-    <p class="card-text text-secondary mb-3">Начало большего</p>
-    <p class="text-secondary mb-4"><strong>Paradox Project</strong></p>
-
-    <div class="d-flex justify-content-center gap-2 mb-3 flex-wrap">
-      <a href="soft.html" class="btn btn-small-square">Soft</a>
-      <a href="minecraft.html" class="btn btn-small-square">Minecraft</a>
-    </div>
-
-    <div class="d-flex justify-content-center gap-3 mt-2 socials">
-      <a href="https://t.me/tgshpekers" target="_blank"><i class="bi bi-telegram"></i></a>
-      <a href="https://github.com/shpekers" target="_blank"><i class="bi bi-github"></i></a>
-      <a href="https://shpekers.ru/discord" target="_blank"><i class="bi bi-discord"></i></a>
-      <a href="https://dalink.to/shpekers" target="_blank"><i class="bi bi-heart-fill"></i></a>
+<div class="main-block">
+  <!-- Логотип и заголовок -->
+  <div class="header-block">
+    <img src="favicon.ico" alt="Paradox Logo" class="logo">
+    <div class="header-text">
+      <h1>shpekers</h1>
+      <p><strong>Paradox Project</strong></p>
     </div>
   </div>
+
+  <!-- Соцсети -->
+  <div class="socials mb-3">
+    <a href="https://t.me/tgshpekers" target="_blank"><i class="bi bi-telegram"></i></a>
+    <a href="https://github.com/shpekers" target="_blank"><i class="bi bi-github"></i></a>
+    <a href="https://shpekers.ru/discord" target="_blank"><i class="bi bi-discord"></i></a>
+    <a href="https://dalink.to/shpekers" target="_blank"><i class="bi bi-heart-fill"></i></a>
+  </div>
+
+  <!-- Проекты -->
+  <div class="project-card">
+    <div class="project-title">Paradox App</div>
+    <p>Приложение для Windows, позволяющее обходить блокировки и ограничения Discord и YouTube, сохраняя стабильное соединение и высокую скорость работы.</p>
+    <button class="download-btn" onclick="window.open('https://github.com/shpekers/paradox/raw/refs/heads/main/mysetup.exe', '_blank')">
+      <i class="bi bi-download"></i> Загрузить
+    </button>
+  </div>
+
+  <div class="project-card">
+    <div class="project-title">Paradox VPN</div>
+    <p>Конфигурации VLESS для v2RayTun</p>
+
+    <div class="copy-config">
+      <span class="config-label">Standart</span>
+      <input type="text" id="vpnConfig" value="https://shpekers.ru/paradox-vpn.json" readonly>
+      <button onclick="copyVPN('vpnConfig')">Копировать</button>
+    </div>
+
+    <div class="copy-config">
+      <span class="config-label">Premium</span>
+      <input type="text" id="premiumConfig" value="https://shpekers.ru/paradox-vpn-premium.json" readonly>
+      <button onclick="copyVPN('premiumConfig')">Копировать</button>
+    </div>
+  </div>
+
 </div>
 
 <script>
+function copyVPN(id) {
+  const copyText = document.getElementById(id);
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(copyText.value).then(() => {
+    alert("Ссылка скопирована!");
+  });
+}
+
+// Matrix background
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -132,22 +229,19 @@ resizeCanvas();
 const fontSize = 14;
 const columns = Math.floor(canvas.width / fontSize);
 const drops = Array(columns).fill(0);
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>!@#$%^&*(){}[];:,.';
+const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>!@#$%^&*(){}[];:,.'; 
 
 function draw() {
   ctx.fillStyle = 'rgba(10, 10, 10, 0.2)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
   ctx.fillStyle = 'rgba(200,200,200,0.6)';
   ctx.font = fontSize + 'px monospace';
-
   for (let i = 0; i < drops.length; i++) {
     const text = chars.charAt(Math.floor(Math.random() * chars.length));
     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
     if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
     drops[i]++;
   }
-
   requestAnimationFrame(draw);
 }
 draw();
