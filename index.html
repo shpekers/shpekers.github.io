@@ -1,256 +1,142 @@
 <!DOCTYPE html>
-<html lang="ru" data-bs-theme="dark">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>shpekers</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      background-color: #0a0a0a;
-      font-family: monospace;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    .main-block {
-      background-color: #1c1c1c;
-      color: #e0e0e0;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
-      width: 700px;
-      max-width: 95%;
-      padding: 2rem;
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .header-block {
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .header-block img.logo {
-      width: 60px;
-      border-radius: 8px;
-
-    }
-
-    .header-text h1 {
-      margin: 0;
-      font-size: 2rem;
-      color: #e0e0e0;
-    }
-
-    .header-text p {
-      margin: 0;
-      font-size: 1rem;
-      color: #bbb;
-    }
-
-    .socials a {
-      font-size: 1.2rem;
-      color: #888;
-      margin: 0 5px;
-      transition: all 0.2s;
-    }
-
-    .socials a:hover {
-      color: #e0e0e0;
-      transform: scale(1.2);
-    }
-
-    .project-card {
-      background-color: #222;
-      border: 1px solid #555;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-top: 15px;
-      text-align: center;
-      position: relative;
-    }
-
-    .project-title {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .project-card p {
-      color: #ccc;
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-    }
-
-    .download-btn, .copy-config button {
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: none;
-      background-color: #555;
-      color: #e0e0e0;
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: all 0.2s;
-    }
-
-    .download-btn:hover, .copy-config button:hover {
-      background-color: #777;
-    }
-
-    .copy-config {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .copy-config input {
-      width: 60%;
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: none;
-      background-color: #333;
-      color: #e0e0e0;
-      font-family: monospace;
-      text-align: center;
-    }
-
-    .config-label {
-      font-weight: 600;
-      color: #aaa;
-      font-size: 0.85rem;
-      width: 70px;
-      text-align: right;
-    }
-
-    @media (max-width: 576px) {
-      .main-block {
-        width: 95%;
-        padding: 1rem;
-      }
-      .socials a {
-        font-size: 1rem;
-      }
-      .copy-config input {
-        width: 50%;
-      }
-      .config-label {
-        width: 60px;
-        font-size: 0.8rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shpekers</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* Minimal style for canvas, as it's positioned behind everything */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-[#0a0a0a] font-mono flex items-center justify-center min-h-screen">
 
-<canvas id="matrixCanvas"></canvas>
+    <canvas id="matrixCanvas"></canvas>
 
-<div class="main-block">
-  <!-- Логотип и заголовок -->
-  <div class="header-block">
-    <img src="favicon.ico" alt="Paradox Logo" class="logo">
-    <div class="header-text">
-      <h1>shpekers</h1>
-      <p><strong>Paradox Project</strong></p>
-    </div>
-  </div>
+    <main class="bg-[#1c1c1c] text-[#e0e0e0] shadow-2xl shadow-black/70 rounded-lg w-[700px] max-w-[95%] p-8 text-center">
+        <!-- Header -->
+        <header class="flex items-start justify-center gap-4 mb-5">
+            <img src="favicon.ico" alt="Paradox Logo" class="w-16 rounded-lg">
+            <div class="text-left">
+                <h1 class="text-3xl font-bold text-white">shpekers</h1>
+                <p class="text-[#bbb]"><strong>Paradox Project</strong></p>
+            </div>
+        </header>
 
-  <!-- Соцсети -->
-  <div class="socials mb-3">
-    <a href="https://t.me/tgshpekers" target="_blank"><i class="bi bi-telegram"></i></a>
-    <a href="https://github.com/shpekers" target="_blank"><i class="bi bi-github"></i></a>
-    <a href="https://shpekers.ru/discord" target="_blank"><i class="bi bi-discord"></i></a>
-    <a href="https://dalink.to/shpekers" target="_blank"><i class="bi bi-heart-fill"></i></a>
-  </div>
+        <!-- Socials -->
+        <div class="flex justify-center gap-4 mb-6">
+            <a href="https://t.me/tgshpekers" target="_blank" class="text-2xl text-[#888] hover:text-white hover:scale-125 transition-all"><i class="bi bi-telegram"></i></a>
+            <a href="https://github.com/shpekers" target="_blank" class="text-2xl text-[#888] hover:text-white hover:scale-125 transition-all"><i class="bi bi-github"></i></a>
+            <a href="https://shpekers.ru/discord" target="_blank" class="text-2xl text-[#888] hover:text-white hover:scale-125 transition-all"><i class="bi bi-discord"></i></a>
+            <a href="https://dalink.to/shpekers" target="_blank" class="text-2xl text-[#888] hover:text-white hover:scale-125 transition-all"><i class="bi bi-heart-fill"></i></a>
+        </div>
 
-  <!-- Проекты -->
-  <div class="project-card">
-    <div class="project-title">Paradox App</div>
-    <p>Приложение для Windows, позволяющее обходить блокировки и ограничения Discord и YouTube, сохраняя стабильное соединение и высокую скорость работы.</p>
-    <button class="download-btn" onclick="window.open('https://github.com/shpekers/paradox/raw/refs/heads/main/mysetup.exe', '_blank')">
-      <i class="bi bi-download"></i> Загрузить
-    </button>
-  </div>
+        <!-- Projects -->
+        <div class="space-y-4">
+            <!-- Project 1: Paradox App -->
+            <div class="bg-[#222] border border-[#555] rounded-lg p-4 text-center">
+                <h2 class="font-bold text-lg mb-1 text-white">Paradox App</h2>
+                <p class="text-[#ccc] text-sm mb-3">Приложение для Windows, позволяющее обходить блокировки и ограничения Discord и YouTube, сохраняя стабильное соединение и высокую скорость работы.</p>
+                <button onclick="window.open('''https://github.com/shpekers/paradox/raw/refs/heads/main/mysetup.exe''', '_blank')" class="bg-[#555] hover:bg-[#777] text-white font-semibold py-2 px-4 rounded-lg transition-colors inline-flex items-center gap-2">
+                    <i class="bi bi-download"></i>
+                    <span>Загрузить</span>
+                </button>
+            </div>
 
-  <div class="project-card">
-    <div class="project-title">Paradox VPN</div>
-    <p>Конфигурации VLESS для v2RayTun</p>
+            <!-- Project 2: Paradox VPN -->
+            <div class="bg-[#222] border border-[#555] rounded-lg p-4 text-center">
+                <h2 class="font-bold text-lg mb-3 text-white">Paradox VPN</h2>
+                <p class="text-[#ccc] text-sm mb-3">Конфигурации VLESS для v2RayTun</p>
+                <div class="space-y-3">
+                    <div class="flex gap-2 justify-center items-center">
+                        <label for="vpnConfig" class="font-semibold text-[#aaa] text-sm w-20 text-right">Standart</label>
+                        <input type="text" id="vpnConfig" value="https://shpekers.ru/paradox-vpn.json" readonly class="w-3/5 bg-[#333] text-[#e0e0e0] font-mono text-center py-1 px-2 rounded-md border-0">
+                        <button onclick="copyVPN('vpnConfig')" class="bg-[#555] hover:bg-[#777] text-white font-semibold py-1 px-3 rounded-lg transition-colors text-sm">Копировать</button>
+                    </div>
+                    <div class="flex gap-2 justify-center items-center">
+                        <label for="premiumConfig" class="font-semibold text-[#aaa] text-sm w-20 text-right">Premium</label>
+                        <input type="text" id="premiumConfig" value="https://shpekers.ru/paradox-vpn-premium.json" readonly class="w-3/5 bg-[#333] text-[#e0e0e0] font-mono text-center py-1 px-2 rounded-md border-0">
+                        <button onclick="copyVPN('premiumConfig')" class="bg-[#555] hover:bg-[#777] text-white font-semibold py-1 px-3 rounded-lg transition-colors text-sm">Копировать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
-    <div class="copy-config">
-      <span class="config-label">Standart</span>
-      <input type="text" id="vpnConfig" value="https://shpekers.ru/paradox-vpn.json" readonly>
-      <button onclick="copyVPN('vpnConfig')">Копировать</button>
-    </div>
+    <script>
+        function copyVPN(id) {
+            const inputElement = document.getElementById(id);
+            inputElement.select();
+            inputElement.setSelectionRange(0, 99999); // For mobile devices
+            navigator.clipboard.writeText(inputElement.value).then(() => {
+                // Maybe show a more modern notification in the future
+                alert("Ссылка скопирована!");
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
 
-    <div class="copy-config">
-      <span class="config-label">Premium</span>
-      <input type="text" id="premiumConfig" value="https://shpekers.ru/paradox-vpn-premium.json" readonly>
-      <button onclick="copyVPN('premiumConfig')">Копировать</button>
-    </div>
-  </div>
+        // Matrix Background Effect
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
 
-</div>
+        let drops = [];
+        let columns = 0;
+        const fontSize = 14;
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>!@#$%^&*(){}[];:,.';
 
-<script>
-function copyVPN(id) {
-  const copyText = document.getElementById(id);
-  copyText.select();
-  copyText.setSelectionRange(0, 99999);
-  navigator.clipboard.writeText(copyText.value).then(() => {
-    alert("Ссылка скопирована!");
-  });
-}
+        function initializeMatrix() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            columns = Math.floor(canvas.width / fontSize);
+            drops = Array(columns).fill(1).map(() => Math.floor(Math.random() * canvas.height));
+        }
 
-// Matrix background
-const canvas = document.getElementById('matrixCanvas');
-const ctx = canvas.getContext('2d');
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.2)'; // Fading effect
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = 'rgba(200, 200, 200, 0.6)'; // Character color
+            ctx.font = `${fontSize}px monospace`;
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-const fontSize = 14;
-const columns = Math.floor(canvas.width / fontSize);
-const drops = Array(columns).fill(0);
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>!@#$%^&*(){}[];:,.'; 
+                // Reset drop when it goes off-screen, with a random chance
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        
+        let animationFrameId;
+        function animate() {
+            drawMatrix();
+            animationFrameId = requestAnimationFrame(animate);
+        }
 
-function draw() {
-  ctx.fillStyle = 'rgba(10, 10, 10, 0.2)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'rgba(200,200,200,0.6)';
-  ctx.font = fontSize + 'px monospace';
-  for (let i = 0; i < drops.length; i++) {
-    const text = chars.charAt(Math.floor(Math.random() * chars.length));
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-    drops[i]++;
-  }
-  requestAnimationFrame(draw);
-}
-draw();
+        // Initialize and start
+        initializeMatrix();
+        animate();
 
-window.addEventListener('resize', () => {
-  resizeCanvas();
-});
-</script>
+        // Resize handler
+        window.addEventListener('resize', () => {
+            cancelAnimationFrame(animationFrameId);
+            initializeMatrix();
+animate();
+        });
+    </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
