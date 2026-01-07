@@ -1,145 +1,173 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>shpekers</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        /* Minimal style for canvas, as it's positioned behind everything */
-        #matrixCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shpekers | Paradox Project</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <style>
+            /* Custom scrollbar */
+            ::-webkit-scrollbar {
+                width: 8px;
+            }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4c1d95; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6d28d9; 
+        }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .shimmer-text {
+            background: linear-gradient(90deg, #a78bfa 0%, #ffffff 50%, #a78bfa 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            to { background-position: 200% center; }
         }
     </style>
 </head>
-<body class="bg-[#0a0a0a] font-mono flex items-center justify-center min-h-screen">
+<body class="bg-slate-950 text-slate-200 font-sans antialiased min-h-screen flex flex-col selection:bg-violet-600 selection:text-white">
 
-    <canvas id="matrixCanvas"></canvas>
-
-    <main class="bg-[#1c1c1c] text-[#e0e0e0] shadow-2xl shadow-black/70 rounded-lg w-[700px] max-w-[95%] p-8 text-center">
-        <!-- Header -->
-        <header class="flex items-start justify-center gap-4 mb-5">
-            <img src="favicon.ico" alt="Paradox Logo" class="w-16 rounded-lg">
-            <div class="text-left">
-                <h1 class="text-3xl font-bold text-white">shpekers</h1>
-                <p class="text-[#bbb]"><strong>Paradox Project</strong></p>
-            </div>
-        </header>
-
-        <!-- Socials -->
-        <div class="flex justify-center gap-4 mb-6">
-            <a href="https://t.me/tgshpekers" target="_blank" class="text-2xl text-[#888] hover:text-white hover:scale-125 transition-all"><i class="bi bi-telegram"></i></a>
-            <a href="https://github.com/shpekers" target="_blank" class="text-2xl text-[#888] hover:text-white hover:scale-125 transition-all"><i class="bi bi-github"></i></a>
-            <a href="https://shpekers.ru/discord" target="_blank" class="text-2xl text-[#888] hover:text-white hover:scale-125 transition-all"><i class="bi bi-discord"></i></a>
-            <a href="https://dalink.to/shpekers" target="_blank" class="text-2xl text-[#888] hover:text-white hover:scale-125 transition-all"><i class="bi bi-heart-fill"></i></a>
-        </div>
-
-        <!-- Projects -->
-        <div class="space-y-4">
-            <!-- Project 1: Paradox App -->
-            <div class="bg-[#222] border border-[#555] rounded-lg p-4 text-center">
-                <h2 class="font-bold text-lg mb-1 text-white">Paradox App</h2>
-                <p class="text-[#ccc] text-sm mb-3">Приложение для Windows, позволяющее обходить блокировки и ограничения Discord и YouTube, сохраняя стабильное соединение и высокую скорость работы.</p>
-                <button onclick="window.open('https://github.com/shpekers/paradox-client/raw/refs/heads/main/ParadoxSetup.exe', '_blank')" class="bg-[#555] hover:bg-[#777] text-white font-semibold py-2 px-4 rounded-lg transition-colors inline-flex items-center gap-2">
-                    <i class="bi bi-download"></i>
-                    <span>Загрузить</span>
-                </button>
-            </div>
-
-            <!-- Project 2: Paradox VPN -->
-            <div class="bg-[#222] border border-[#555] rounded-lg p-4 text-center">
-                <h2 class="font-bold text-lg mb-3 text-white">Paradox VPN</h2>
-                <p class="text-[#ccc] text-sm mb-3">Конфигурации VLESS для v2RayTun</p>
-                <div class="space-y-3">
-                    <div class="flex gap-2 justify-center items-center">
-                        <label for="vpnConfig" class="font-semibold text-[#aaa] text-sm w-20 text-right">Standart</label>
-                        <input type="text" id="vpnConfig" value="https://shpekers.ru/paradox-vpn.json" readonly class="w-3/5 bg-[#333] text-[#e0e0e0] font-mono text-center py-1 px-2 rounded-md border-0">
-                        <button onclick="copyVPN('vpnConfig')" class="bg-[#555] hover:bg-[#777] text-white font-semibold py-1 px-3 rounded-lg transition-colors text-sm">Копировать</button>
-                    </div>
-                    <div class="flex gap-2 justify-center items-center">
-                        <label for="premiumConfig" class="font-semibold text-[#aaa] text-sm w-20 text-right">Premium</label>
-                        <input type="text" id="premiumConfig" value="https://shpekers.ru/paradox-vpn-premium.json" readonly class="w-3/5 bg-[#333] text-[#e0e0e0] font-mono text-center py-1 px-2 rounded-md border-0">
-                        <button onclick="copyVPN('premiumConfig')" class="bg-[#555] hover:bg-[#777] text-white font-semibold py-1 px-3 rounded-lg transition-colors text-sm">Копировать</button>
-                    </div>
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 glass-panel border-b border-white/5">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-code text-violet-500 text-2xl"></i>
+                    <span class="font-bold text-xl tracking-wider text-white">SHPEKERS<span class="text-violet-500 text-xs align-top ml-1">RU</span></span>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-violet-400 bg-white/5 transition hover:bg-white/10">Главная</a>
+                    <a href="help.html" class="px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition">Помощь</a>
                 </div>
             </div>
         </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-5xl relative">
+        
+        <!-- HOME SECTION -->
+        <section id="home-section" class="fade-in space-y-12">
+            
+            <!-- Hero -->
+            <div class="text-center mt-12 mb-20 relative z-10">
+                <!-- Decorative background glow -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] max-w-[600px] h-[40vh] max-h-[400px] bg-violet-600/10 blur-[90px] rounded-full pointer-events-none -z-10"></div>
+
+                <h1 class="text-4xl sm:text-7xl md:text-9xl font-black text-white tracking-tighter leading-none mb-2 drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]">
+                    SHPEKERS
+                </h1>
+                
+                <h2 class="text-xl sm:text-3xl md:text-4xl font-bold tracking-[0.25em] uppercase mb-6 shimmer-text">
+                    PARADOX PROJECT
+                </h2>
+
+                <!-- Socials -->
+                <div class="flex justify-center gap-3 sm:gap-4 mb-10">
+                    <a href="discord.html" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/5 hover:bg-violet-600 hover:text-white flex items-center justify-center transition-all duration-300 text-slate-400 border border-white/10" title="Discord" aria-label="Discord">
+                        <i class="fa-brands fa-discord text-xl"></i>
+                    </a>
+                    <a href="http://t.me/shpekers" target="_blank" rel="noopener noreferrer" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/5 hover:bg-violet-600 hover:text-white flex items-center justify-center transition-all duration-300 text-slate-400 border border-white/10" title="Telegram" aria-label="Telegram канал">
+                        <i class="fa-brands fa-telegram text-xl"></i>
+                    </a>
+                    <a href="https://github.com/shpekers" target="_blank" rel="noopener noreferrer" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/5 hover:bg-violet-600 hover:text-white flex items-center justify-center transition-all duration-300 text-slate-400 border border-white/10" title="GitHub" aria-label="GitHub профиль">
+                        <i class="fa-brands fa-github text-xl"></i>
+                    </a>
+                </div>
+
+                <!-- Animated Arrow -->
+                <div class="flex justify-center mb-8 animate-bounce">
+                    <i class="fa-solid fa-chevron-down text-violet-500/50 text-2xl"></i>
+                </div>
+
+                <h3 class="text-3xl font-bold text-white mb-4">Paradox Client</h3>
+                
+                <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    Графический ремастер <strong>Zapret</strong> на базе <strong>WinDivert</strong>.
+                    <br>Мощь проверенных технологий в удобном интерфейсе без командной строки.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                    <a href="https://github.com/shpekers/paradox-client/raw/refs/heads/main/ParadoxSetup.exe" download class="group relative px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-lg transition-all shadow-lg shadow-violet-900/50 flex items-center justify-center gap-3 overflow-hidden">
+                        <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                        <i class="fa-brands fa-windows text-xl"></i>
+                        <div class="text-left">
+                            <span class="block text-xs font-normal text-violet-200">Скачать для Windows</span>
+                            <span class="block leading-none">Paradox Client</span>
+                        </div>
+                    </a>
+                    <a href="help.html" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg transition-all border border-slate-700 flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>Как настроить?</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Paradox VPN Section -->
+            <div class="mt-12 relative rounded-2xl bg-slate-900/40 border border-slate-800 overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-violet-600/5"></div>
+                <div class="absolute -right-8 -top-8 text-7xl md:text-9xl text-white opacity-5 rotate-12 group-hover:rotate-0 group-hover:scale-110 transition duration-700">
+                    <i class="fa-brands fa-telegram"></i>
+                </div>
+                
+                <div class="relative p-6 md:p-12 flex flex-col md:flex-row items-center gap-6 md:gap-12">
+                    <div class="flex-1 text-center md:text-left">
+                        <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+                            <span class="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold tracking-wider">TELEGRAM BOT</span>
+                        </div>
+                        <h3 class="text-3xl font-bold text-white mb-4">Paradox VPN</h3>
+                        <p class="text-slate-400 text-lg mb-8">
+                            У нас также есть бот в Telegram, где можно приобрести приватный VPN.
+                            <br>Быстрая настройка, стабильное соединение и никаких сложностей.
+                        </p>
+                        <a href="https://t.me/Paradox_VPNbot?start" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#24A1DE] hover:bg-[#208bbf] text-white font-bold rounded-lg transition-all" aria-label="Открыть Telegram-бот Paradox VPN">
+                            <i class="fa-regular fa-paper-plane"></i>
+                            <span>Перейти в бота</span>
+                        </a>
+                    </div>
+                    <div class="shrink-0 w-16 h-16 md:w-24 md:h-24 rounded-2xl bg-[#24A1DE]/10 flex items-center justify-center text-[#24A1DE] border border-[#24A1DE]/20 shadow-[0_0_30px_rgba(36,161,222,0.15)]">
+                        <i class="fa-solid fa-shield-halved text-3xl md:text-5xl"></i>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
     </main>
 
-    <script>
-        function copyVPN(id) {
-            const inputElement = document.getElementById(id);
-            inputElement.select();
-            inputElement.setSelectionRange(0, 99999); // For mobile devices
-            navigator.clipboard.writeText(inputElement.value).then(() => {
-                // Maybe show a more modern notification in the future
-                alert("Ссылка скопирована!");
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        }
-
-        // Matrix Background Effect
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
-
-        let drops = [];
-        let columns = 0;
-        const fontSize = 14;
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789<>!@#$%^&*(){}[];:,.';
-
-        function initializeMatrix() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            columns = Math.floor(canvas.width / fontSize);
-            drops = Array(columns).fill(1).map(() => Math.floor(Math.random() * canvas.height));
-        }
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.2)'; // Fading effect
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = 'rgba(200, 200, 200, 0.6)'; // Character color
-            ctx.font = `${fontSize}px monospace`;
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars.charAt(Math.floor(Math.random() * chars.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                // Reset drop when it goes off-screen, with a random chance
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-        }
-        
-        let animationFrameId;
-        function animate() {
-            drawMatrix();
-            animationFrameId = requestAnimationFrame(animate);
-        }
-
-        // Initialize and start
-        initializeMatrix();
-        animate();
-
-        // Resize handler
-        window.addEventListener('resize', () => {
-            cancelAnimationFrame(animationFrameId);
-            initializeMatrix();
-animate();
-        });
-    </script>
-
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 bg-black/20 py-6 mt-8">
+        <div class="container mx-auto px-4 text-center text-slate-600 text-sm">
+            <p>&copy; 2026 Shpekers.ru | Paradox Project.</p>
+            <p class="mt-1">Designed & Developed by <span class="text-slate-500">Shpekers</span>,</p>
+        </div>
+    </footer>
 </body>
 </html>
-
-
-
