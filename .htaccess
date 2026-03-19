@@ -1,0 +1,3 @@
+RewriteEngine On
+# Любая ссылка, содержащая cfg.json — отдаём реальный cfg.json
+RewriteRule .*cfg\.json.* cfg.json [L]
