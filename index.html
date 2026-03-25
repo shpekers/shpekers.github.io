@@ -1,173 +1,471 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Shpekers | Paradox Project</title>
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="icon" type="image/x-icon" href="favicon.ico">
-        <style>
-            /* Custom scrollbar */
-            ::-webkit-scrollbar {
-                width: 8px;
-            }
-        ::-webkit-scrollbar-track {
-            background: #0f172a; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4c1d95; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6d28d9; 
-        }
-        
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shpekers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            padding: 40px 20px;
+            line-height: 1.6;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
         }
-        
-        .shimmer-text {
-            background: linear-gradient(90deg, #a78bfa 0%, #ffffff 50%, #a78bfa 100%);
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 6px;
+            background: linear-gradient(
+                90deg,
+                #f472b6 0%,
+                #a78bfa 20%,
+                #60a5fa 40%,
+                #4ade80 60%,
+                #facc15 80%,
+                #f472b6 100%
+            );
             background-size: 200% auto;
-            color: transparent;
             -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: shimmer 3s linear infinite;
+            animation: shine 4s linear infinite;
+            margin-bottom: 16px;
         }
-        
+
+        @keyframes shine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .description {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto 24px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 50px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: #151515;
+            border: 1px solid #252525;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #9ca3af;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: #1a1a1a;
+            border-color: #353535;
+            transform: translateY(-2px);
+        }
+
+        .social-link i {
+            font-size: 1.2rem;
+        }
+
+        .social-link.telegram i { color: #29b6f6; }
+        .social-link.telegram:hover { border-color: #29b6f6; color: #29b6f6; }
+
+        .social-link.github i { color: #e0e0e0; }
+        .social-link.github:hover { border-color: #e0e0e0; color: #e0e0e0; }
+
+        .social-link.discord i { color: #7289da; }
+        .social-link.discord:hover { border-color: #7289da; color: #7289da; }
+
+        .paradox-banner {
+            background: linear-gradient(135deg, #1a1a2a 0%, #2a1a2a 100%);
+            border: 1px solid #3a2a3a;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .paradox-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(168, 85, 247, 0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite linear;
+        }
+
         @keyframes shimmer {
-            to { background-position: 200% center; }
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .paradox-banner-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .paradox-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #a855f7;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .paradox-desc {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .paradox-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .paradox-btn:hover {
+            background: linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        .section {
+            background: #0f0f0f;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .section:hover {
+            border-color: #252525;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #d1d5db;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon-download { color: #4ade80; }
+        .section-title .icon-config { color: #60a5fa; }
+
+        .section-desc {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 18px 24px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: #d1d5db;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background: #252525;
+            border-color: #3a3a3a;
+            transform: translateY(-2px);
+            color: #e5e7eb;
+        }
+
+        .download-btn i {
+            font-size: 1.3rem;
+            color: #60a5fa;
+        }
+
+        .download-info {
+            margin-top: 12px;
+            font-size: 0.75rem;
+            color: #4b5563;
+            text-align: center;
+        }
+
+        .subscription-box {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .subscription-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .subscription-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #d1d5db;
+        }
+
+        .subscription-status {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: #1a1a1a;
+            color: #4ade80;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .subscription-status i {
+            font-size: 0.5rem;
+            color: #4ade80;
+        }
+
+        .subscription-url {
+            background: #050505;
+            border: 1px solid #151515;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: #6b7280;
+            word-break: break-all;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .subscription-url:hover {
+            background: #0a0a0a;
+            border-color: #252525;
+            color: #9ca3af;
+        }
+
+        .btn {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            color: #d1d5db;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: #252525;
+            border-color: #3a3a3a;
+        }
+
+        .btn i { color: #a78bfa; }
+
+        .btn.copied {
+            background: #1a2a1a;
+            border-color: #2a3a2a;
+            color: #4ade80;
+        }
+
+        .btn.copied i { color: #4ade80; }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #1a1a1a;
+            font-size: 0.7rem;
+            color: #374151;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .social-links {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-200 font-sans antialiased min-h-screen flex flex-col selection:bg-violet-600 selection:text-white">
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="logo">SHPEKERS</h1>
+            <p class="description">
+                Приватный VPN-сервис для безопасного и анонимного доступа в интернет. 
+                Современные протоколы, высокая скорость, серверы по всему миру.
+            </p>
+        </div>
 
-    <!-- Navbar -->
-    <nav class="sticky top-0 z-50 glass-panel border-b border-white/5">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-code text-violet-500 text-2xl"></i>
-                    <span class="font-bold text-xl tracking-wider text-white">SHPEKERS<span class="text-violet-500 text-xs align-top ml-1">RU</span></span>
+        <div class="social-links">
+            <a href="https://t.me/tgshpekers" class="social-link telegram" target="_blank">
+                <i class="fab fa-telegram"></i>
+                <span>Telegram</span>
+            </a>
+            <a href="https://github.com/shpekers" class="social-link github" target="_blank">
+                <i class="fab fa-github"></i>
+                <span>GitHub</span>
+            </a>
+            <a href="https://shpekers.ru/discord" class="social-link discord" target="_blank">
+                <i class="fab fa-discord"></i>
+                <span>Discord</span>
+            </a>
+        </div>
+
+        <div class="paradox-banner">
+            <div class="paradox-banner-content">
+                <div class="paradox-title">
+                    <i class="fas fa-robot"></i>
+                    Paradox VPN
                 </div>
-                <div class="flex space-x-4">
-                    <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-violet-400 bg-white/5 transition hover:bg-white/10">Главная</a>
-                    <a href="help.html" class="px-3 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition">Помощь</a>
+                <div class="paradox-desc">
+                    У нас также есть бот в Telegram, где можно приобрести VPN.
                 </div>
+                <a href="https://t.me/Paradox_VPNbot" class="paradox-btn" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                    Перейти в бота
+                </a>
             </div>
         </div>
-    </nav>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow container mx-auto px-4 py-8 max-w-5xl relative">
-        
-        <!-- HOME SECTION -->
-        <section id="home-section" class="fade-in space-y-12">
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-download icon-download"></i>
+                Скачать клиент
+            </div>
+            <div class="section-desc">
+                Paradox Client
+            </div>
             
-            <!-- Hero -->
-            <div class="text-center mt-12 mb-20 relative z-10">
-                <!-- Decorative background glow -->
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] max-w-[600px] h-[40vh] max-h-[400px] bg-violet-600/10 blur-[90px] rounded-full pointer-events-none -z-10"></div>
-
-                <h1 class="text-4xl sm:text-7xl md:text-9xl font-black text-white tracking-tighter leading-none mb-2 drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]">
-                    SHPEKERS
-                </h1>
-                
-                <h2 class="text-xl sm:text-3xl md:text-4xl font-bold tracking-[0.25em] uppercase mb-6 shimmer-text">
-                    PARADOX PROJECT
-                </h2>
-
-                <!-- Socials -->
-                <div class="flex justify-center gap-3 sm:gap-4 mb-10">
-                    <a href="discord.html" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/5 hover:bg-violet-600 hover:text-white flex items-center justify-center transition-all duration-300 text-slate-400 border border-white/10" title="Discord" aria-label="Discord">
-                        <i class="fa-brands fa-discord text-xl"></i>
-                    </a>
-                    <a href="http://t.me/shpekers" target="_blank" rel="noopener noreferrer" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/5 hover:bg-violet-600 hover:text-white flex items-center justify-center transition-all duration-300 text-slate-400 border border-white/10" title="Telegram" aria-label="Telegram канал">
-                        <i class="fa-brands fa-telegram text-xl"></i>
-                    </a>
-                    <a href="https://github.com/shpekers" target="_blank" rel="noopener noreferrer" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/5 hover:bg-violet-600 hover:text-white flex items-center justify-center transition-all duration-300 text-slate-400 border border-white/10" title="GitHub" aria-label="GitHub профиль">
-                        <i class="fa-brands fa-github text-xl"></i>
-                    </a>
-                </div>
-
-                <!-- Animated Arrow -->
-                <div class="flex justify-center mb-8 animate-bounce">
-                    <i class="fa-solid fa-chevron-down text-violet-500/50 text-2xl"></i>
-                </div>
-
-                <h3 class="text-3xl font-bold text-white mb-4">Paradox Client</h3>
-                
-                <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                    Графический ремастер <strong>Zapret</strong> на базе <strong>WinDivert</strong>.
-                    <br>Мощь проверенных технологий в удобном интерфейсе без командной строки.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-                    <a href="https://github.com/shpekers/paradox-client/raw/refs/heads/main/ParadoxSetup.exe" download class="group relative px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-lg transition-all shadow-lg shadow-violet-900/50 flex items-center justify-center gap-3 overflow-hidden">
-                        <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                        <i class="fa-brands fa-windows text-xl"></i>
-                        <div class="text-left">
-                            <span class="block text-xs font-normal text-violet-200">Скачать для Windows</span>
-                            <span class="block leading-none">Paradox Client</span>
-                        </div>
-                    </a>
-                    <a href="help.html" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg transition-all border border-slate-700 flex items-center justify-center gap-3">
-                        <i class="fa-solid fa-book-open"></i>
-                        <span>Как настроить?</span>
-                    </a>
-                </div>
+            <a href="https://github.com/shpekers/paradox-client/raw/refs/heads/main/ParadoxSetup.exe" class="download-btn">
+                <i class="fab fa-windows"></i>
+                <span>Скачать Paradox Client</span>
+            </a>
+            
+            <div class="download-info">
+                Windows 10/11
             </div>
-
-            <!-- Paradox VPN Section -->
-            <div class="mt-12 relative rounded-2xl bg-slate-900/40 border border-slate-800 overflow-hidden group">
-                <div class="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-violet-600/5"></div>
-                <div class="absolute -right-8 -top-8 text-7xl md:text-9xl text-white opacity-5 rotate-12 group-hover:rotate-0 group-hover:scale-110 transition duration-700">
-                    <i class="fa-brands fa-telegram"></i>
-                </div>
-                
-                <div class="relative p-6 md:p-12 flex flex-col md:flex-row items-center gap-6 md:gap-12">
-                    <div class="flex-1 text-center md:text-left">
-                        <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
-                            <span class="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold tracking-wider">TELEGRAM BOT</span>
-                        </div>
-                        <h3 class="text-3xl font-bold text-white mb-4">Paradox VPN</h3>
-                        <p class="text-slate-400 text-lg mb-8">
-                            У нас также есть бот в Telegram, где можно приобрести приватный VPN.
-                            <br>Быстрая настройка, стабильное соединение и никаких сложностей.
-                        </p>
-                        <a href="https://t.me/Paradox_VPNbot?start" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#24A1DE] hover:bg-[#208bbf] text-white font-bold rounded-lg transition-all" aria-label="Открыть Telegram-бот Paradox VPN">
-                            <i class="fa-regular fa-paper-plane"></i>
-                            <span>Перейти в бота</span>
-                        </a>
-                    </div>
-                    <div class="shrink-0 w-16 h-16 md:w-24 md:h-24 rounded-2xl bg-[#24A1DE]/10 flex items-center justify-center text-[#24A1DE] border border-[#24A1DE]/20 shadow-[0_0_30px_rgba(36,161,222,0.15)]">
-                        <i class="fa-solid fa-shield-halved text-3xl md:text-5xl"></i>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-slate-900 bg-black/20 py-6 mt-8">
-        <div class="container mx-auto px-4 text-center text-slate-600 text-sm">
-            <p>&copy; 2026 Shpekers.ru | Paradox Project.</p>
-            <p class="mt-1">Designed & Developed by <span class="text-slate-500">Shpekers</span>,</p>
         </div>
-    </footer>
+
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-link icon-config"></i>
+                Конфигурация VLESS / GRPC
+            </div>
+            <div class="section-desc">
+             
+            </div>
+
+            <div class="subscription-box">
+                <div class="subscription-header">
+                    <div class="subscription-name">Тестовая подписка</div>
+                    <div class="subscription-status">
+                        <i class="fas fa-circle"></i>
+                        Активна
+                    </div>
+                </div>
+                
+                <div class="subscription-url" id="sub-url" onclick="copySubscription(event)">
+                    https://shpekers.ru/n-sub-cfg.json
+                </div>
+                
+                <button class="btn" onclick="copySubscription()">
+                    <i class="far fa-copy"></i>
+                    Копировать
+                </button>
+            </div>
+        </div>
+
+        <div class="footer">
+            shpekers.ru
+        </div>
+    </div>
+
+    <script>
+        function copySubscription(event) {
+            if (event) event.stopPropagation();
+            
+            const element = document.getElementById('sub-url');
+            const text = element.textContent.trim();
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.btn');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
