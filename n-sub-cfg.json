@@ -122,10 +122,10 @@
           "allowInsecure": false,
           "fingerprint": "chrome",
           "publicKey": "6nxJz8CocfUoaDKIBxsN7CeQrpTewdn4PIoD93r8_DM",
-          "serverName": "www.yimg.com",
-          "shortId": "272c",
+          "serverName": "yimg.com",
+          "shortId": "702f8c24",
           "show": false,
-          "spiderX": "/Sr8bXxP5f9aQABu"
+          "spiderX": "/8ZVWgfeLDoIhDrW"
         },
         "security": "reality"
       },
