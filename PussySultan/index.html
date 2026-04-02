@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Имя Артиста - Название Трека</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: #121212; color: #ffffff; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            position: relative; overflow-x: hidden;
+        }
+
+        .bg-blur {
+            position: fixed; top: -10%; left: -10%; width: 120%; height: 120%;
+            background: url('https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=1000&auto=format&fit=crop') no-repeat center center;
+            background-size: cover; filter: blur(40px) brightness(0.3); z-index: -1;
+        }
+
+        .container { width: 100%; max-width: 420px; padding: 40px 20px; text-align: center; z-index: 1; }
+
+        .cover {
+            width: 100%; max-width: 300px; aspect-ratio: 1 / 1; border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); margin: 0 auto 24px; object-fit: cover; display: block;
+            transition: transform 0.08s ease-out; will-change: transform;
+        }
+
+        h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.5px; }
+        .artist { font-size: 16px; color: #a0a0a0; margin-bottom: 24px; }
+
+        /* ПЛЕЕР */
+        .custom-player {
+            display: flex; align-items: center;
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            padding: 16px; border-radius: 20px; margin-bottom: 32px; gap: 16px;
+        }
+
+        .play-btn {
+            background: #ffffff; color: #000000; border: none; width: 48px; height: 48px;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 20px; cursor: pointer; transition: transform 0.2s ease, background 0.2s;
+            flex-shrink: 0; padding-left: 4px; 
+        }
+        .play-btn.playing { padding-left: 0; }
+        .play-btn:hover { transform: scale(1.05); background: #e0e0e0; }
+
+        .player-controls { flex-grow: 1; display: flex; flex-direction: column; gap: 10px; }
+
+        .progress-container {
+            width: 100%; height: 6px; background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px; cursor: pointer; position: relative;
+        }
+        .progress-bar {
+            height: 100%; width: 0%; background: #ffffff; border-radius: 3px; position: relative; transition: width 0.1s linear;
+        }
+        .progress-bar::after {
+            content: ''; position: absolute; right: -6px; top: -3px; width: 12px; height: 12px;
+            background: #ffffff; border-radius: 50%; opacity: 0; transition: opacity 0.2s; box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        .progress-container:hover .progress-bar::after { opacity: 1; }
+
+        .bottom-controls { display: flex; justify-content: space-between; align-items: center; }
+        .time-display { font-size: 12px; color: #a0a0a0; font-weight: 600; }
+
+        .volume-container { display: flex; align-items: center; gap: 8px; }
+        .volume-icon { font-size: 12px; color: #a0a0a0; cursor: pointer; width: 16px; transition: color 0.2s; }
+        .volume-icon:hover { color: #ffffff; }
+
+        .volume-slider {
+            -webkit-appearance: none; appearance: none;
+            width: 60px; height: 4px; background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px; outline: none; cursor: pointer;
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none; width: 10px; height: 10px; background: #ffffff;
+            border-radius: 50%; cursor: pointer; transition: transform 0.1s;
+        }
+        .volume-slider::-webkit-slider-thumb:hover { transform: scale(1.3); }
+
+        .links-container { display: flex; flex-direction: column; gap: 12px; }
+        .link-btn {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            padding: 14px 20px; border-radius: 16px; color: #ffffff; text-decoration: none; transition: all 0.2s ease;
+        }
+        .link-btn:hover { background: rgba(255, 255, 255, 0.15); transform: scale(1.02); }
+        .platform-info { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; }
+        .platform-icon { font-size: 24px; }
+        .action-btn { background: #ffffff; color: #000000; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; text-transform: uppercase; }
+        
+        .link-btn:hover .fa-spotify { color: #1DB954; }
+        .link-btn:hover .fa-apple { color: #A2AAAD; }
+        .link-btn:hover .fa-vk { color: #0077FF; }
+        .link-btn:hover .fa-youtube { color: #FF0000; }
+
+        footer { margin-top: 40px; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-blur"></div>
+
+    <div class="container">
+        <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=500&auto=format&fit=crop" alt="Обложка трека" class="cover" id="coverImage">
+        
+        <h1>Название вашего трека</h1>
+        <p class="artist">Имя Артиста</p>
+
+        <!-- 
+           ВАЖНО: 
+           1. Убедитесь, что файл 'track.mp3' лежит в той же папке, что и index.html.
+           2. Запускайте через Live Server (http://...), а не через file:///...
+        -->
+        <audio id="audio" src="track.mp3" crossorigin="anonymous"></audio>
+
+        <div class="custom-player">
+            <button class="play-btn" id="playBtn"><i class="fa-solid fa-play" id="playIcon"></i></button>
+            <div class="player-controls">
+                <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
+                <div class="bottom-controls">
+                    <div class="time-display"><span id="currentTime">0:00</span> / <span id="duration">0:00</span></div>
+                    <div class="volume-container">
+                        <i class="fa-solid fa-volume-high volume-icon" id="muteIcon"></i>
+                        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.25">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="links-container">
+            <a href="#" class="link-btn" target="_blank">
+                <div class="platform-info"><i class="fa-solid fa-music platform-icon" style="color: #FFCC00;"></i> Яндекс Музыка</div>
+                <div class="action-btn">Слушать</div>
+            </a>
+            <a href="#" class="link-btn" target="_blank">
+                <div class="platform-info"><i class="fa-brands fa-vk platform-icon"></i> VK Музыка</div>
+                <div class="action-btn">Слушать</div>
+            </a>
+            <a href="#" class="link-btn" target="_blank">
+                <div class="platform-info"><i class="fa-brands fa-spotify platform-icon"></i> Spotify</div>
+                <div class="action-btn">Слушать</div>
+            </a>
+            <a href="#" class="link-btn" target="_blank">
+                <div class="platform-info"><i class="fa-brands fa-apple platform-icon"></i> Apple Music</div>
+                <div class="action-btn">Слушать</div>
+            </a>
+        </div>
+
+        <footer>© 2023 Имя Артиста</footer>
+    </div>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const muteIcon = document.getElementById('muteIcon');
+        const coverImage = document.getElementById('coverImage');
+
+        // ==========================================
+        // ЛОГИКА ГРОМКОСТИ С ПАМЯТЬЮ
+        // ==========================================
+        const DEFAULT_VOLUME = 0.25;
+        const savedVolume = localStorage.getItem('playerVolume');
+        let currentVolume = savedVolume !== null ? parseFloat(savedVolume) : DEFAULT_VOLUME;
+        let volumeBeforeMute = currentVolume > 0 ? currentVolume : DEFAULT_VOLUME;
+
+        audio.volume = currentVolume;
+        volumeSlider.value = currentVolume;
+        updateVolumeIcon();
+
+        volumeSlider.addEventListener('input', (e) => {
+            audio.volume = e.target.value;
+            if (audio.volume > 0) volumeBeforeMute = audio.volume;
+            localStorage.setItem('playerVolume', audio.volume);
+            updateVolumeIcon();
+        });
+
+        muteIcon.addEventListener('click', () => {
+            if (audio.volume > 0) {
+                audio.volume = 0; volumeSlider.value = 0;
+            } else {
+                audio.volume = volumeBeforeMute; volumeSlider.value = volumeBeforeMute;
+            }
+            localStorage.setItem('playerVolume', audio.volume);
+            updateVolumeIcon();
+        });
+
+        function updateVolumeIcon() {
+            muteIcon.className = 'fa-solid volume-icon ';
+            if (audio.volume === 0) muteIcon.className += 'fa-volume-xmark';
+            else if (audio.volume < 0.5) muteIcon.className += 'fa-volume-low';
+            else muteIcon.className += 'fa-volume-high';
+        }
+
+        // ==========================================
+        // WEB AUDIO API: АНИМАЦИЯ ПОД БИТ
+        // ==========================================
+        let audioContext;
+        let analyser;
+        let dataArray;
+        let isAudioInitialized = false;
+        let animationId;
+
+        function initAudioAnalyser() {
+            if (isAudioInitialized) return;
+            
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                
+                const source = audioContext.createMediaElementSource(audio);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+                
+                analyser.fftSize = 256;
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+                
+                isAudioInitialized = true;
+                console.log("Аудио-анализатор успешно инициализирован.");
+            } catch (e) {
+                console.log("Ошибка инициализации AudioContext:", e);
+            }
+        }
+
+        function animateCover() {
+            if (audio.paused || !isAudioInitialized) return;
+
+            animationId = requestAnimationFrame(animateCover);
+            analyser.getByteFrequencyData(dataArray);
+
+            // Берем низкие частоты (басы)
+            let bassSum = 0;
+            const bassBars = 4;
+            for (let i = 0; i < bassBars; i++) {
+                bassSum += dataArray[i];
+            }
+            const avgBass = bassSum / bassBars;
+
+            // Формула пульсации: от 1.0 до 1.15
+            const scale = 1 + (avgBass / 255) * 0.15;
+            coverImage.style.transform = `scale(${scale})`;
+        }
+
+        // ==========================================
+        // ЛОГИКА ПЛЕЕРА
+        // ==========================================
+        function togglePlay() {
+            if (!isAudioInitialized) {
+                initAudioAnalyser();
+            }
+
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
+            if (audio.paused) {
+                audio.play();
+                playIcon.classList.replace('fa-play', 'fa-pause');
+                playBtn.classList.add('playing');
+                animateCover();
+            } else {
+                audio.pause();
+                playIcon.classList.replace('fa-pause', 'fa-play');
+                playBtn.classList.remove('playing');
+                cancelAnimationFrame(animationId);
+                coverImage.style.transform = `scale(1)`;
+            }
+        }
+
+        function updateProgress(e) {
+            const { duration, currentTime } = e.srcElement;
+            if (isNaN(duration)) return;
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            currentTimeEl.innerText = formatTime(currentTime);
+        }
+
+        function setProgress(e) {
+            const width = this.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / width) * duration;
+        }
+
+        function formatTime(time) {
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time % 60);
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        playBtn.addEventListener('click', togglePlay);
+        audio.addEventListener('timeupdate', updateProgress);
+        progressContainer.addEventListener('click', setProgress);
+
+        audio.addEventListener('loadedmetadata', () => { durationEl.innerText = formatTime(audio.duration); });
+        
+        // Ошибка загрузки
+        audio.addEventListener('error', () => {
+            console.error("Ошибка загрузки аудио. Убедитесь, что файл 'track.mp3' находится в папке с index.html и запущен через локальный сервер.");
+            alert("Не удалось загрузить аудиофайл. Проверьте, что файл 'track.mp3' лежит рядом с index.html и сайт запущен через Live Server (localhost).");
+        });
+
+        audio.addEventListener('ended', () => {
+            playIcon.classList.replace('fa-pause', 'fa-play');
+            playBtn.classList.remove('playing');
+            progressBar.style.width = '0%';
+            currentTimeEl.innerText = '0:00';
+            coverImage.style.transform = `scale(1)`;
+        });
+    </script>
+
+</body>
+</html>
