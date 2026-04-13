@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shpekers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Библиотека для генерации QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -16,24 +18,25 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #0a0a0a;
             color: #e0e0e0;
-            padding: 40px 20px;
+            padding: 60px 20px; /* Увеличен верхний отступ */
             line-height: 1.6;
         }
 
         .container {
-            max-width: 700px;
+            max-width: 720px;
             margin: 0 auto;
         }
 
+        /* --- Header --- */
         .header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
 
         .logo {
             font-size: 3.5rem;
-            font-weight: 700;
-            letter-spacing: 6px;
+            font-weight: 800;
+            letter-spacing: 8px;
             background: linear-gradient(
                 90deg,
                 #f472b6 0%,
@@ -48,7 +51,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: shine 4s linear infinite;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         @keyframes shine {
@@ -57,410 +60,373 @@
         }
 
         .description {
-            color: #6b7280;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            color: #888;
+            font-size: 1rem;
             max-width: 500px;
-            margin: 0 auto 24px;
+            margin: 0 auto;
         }
 
+        /* --- Social Links --- */
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 50px;
+            gap: 16px;
+            margin-bottom: 60px;
         }
 
         .social-link {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
+            gap: 10px;
+            padding: 12px 20px;
             background: #151515;
             border: 1px solid #252525;
-            border-radius: 8px;
+            border-radius: 12px;
             text-decoration: none;
             color: #9ca3af;
-            font-size: 0.85rem;
-            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .social-link:hover {
             background: #1a1a1a;
-            border-color: #353535;
-            transform: translateY(-2px);
-        }
-
-        .social-link i {
-            font-size: 1.2rem;
+            border-color: #444;
+            transform: translateY(-3px);
+            color: #fff;
         }
 
         .social-link.telegram i { color: #29b6f6; }
-        .social-link.telegram:hover { border-color: #29b6f6; color: #29b6f6; }
-
-        .social-link.github i { color: #e0e0e0; }
-        .social-link.github:hover { border-color: #e0e0e0; color: #e0e0e0; }
-
+        .social-link.github i { color: #fff; }
         .social-link.discord i { color: #7289da; }
-        .social-link.discord:hover { border-color: #7289da; color: #7289da; }
 
+        /* --- Banner --- */
         .paradox-banner {
-            background: linear-gradient(135deg, #1a1a2a 0%, #2a1a2a 100%);
-            border: 1px solid #3a2a3a;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #251a2e 100%);
+            border: 1px solid #3a2a4a;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 32px;
             position: relative;
             overflow: hidden;
         }
 
-        .paradox-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent 30%, rgba(168, 85, 247, 0.1) 50%, transparent 70%);
-            animation: shimmer 3s infinite linear;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .paradox-banner-content {
-            position: relative;
-            z-index: 1;
-        }
-
         .paradox-title {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: #a855f7;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .paradox-desc {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #9ca3af;
-            margin-bottom: 20px;
-            line-height: 1.5;
+            margin-bottom: 25px;
+            max-width: 450px;
         }
 
         .paradox-btn {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 12px 24px;
+            padding: 14px 28px;
             background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             color: white;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
             text-decoration: none;
+            transition: 0.3s;
         }
 
         .paradox-btn:hover {
-            background: linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
         }
 
+        /* --- Global Section Style --- */
         .section {
             background: #0f0f0f;
             border: 1px solid #1a1a1a;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 20px;
-            transition: border-color 0.3s;
-        }
-
-        .section:hover {
-            border-color: #252525;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 32px;
         }
 
         .section-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #d1d5db;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-
-        .section-title .icon-download { color: #4ade80; }
-        .section-title .icon-config { color: #60a5fa; }
 
         .section-desc {
-            font-size: 0.85rem;
-            color: #6b7280;
-            margin-bottom: 24px;
-            line-height: 1.5;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 28px;
         }
 
+        .icon-download { color: #4ade80; }
+        .icon-config { color: #60a5fa; }
+
+        /* --- Download Button --- */
         .download-btn {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             width: 100%;
-            padding: 18px 24px;
+            padding: 20px;
             background: #1a1a1a;
             border: 1px solid #2a2a2a;
-            border-radius: 8px;
-            color: #d1d5db;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+            border-radius: 14px;
+            color: #fff;
             text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s ease;
         }
 
         .download-btn:hover {
-            background: #252525;
-            border-color: #3a3a3a;
+            background: #222;
+            border-color: #444;
             transform: translateY(-2px);
-            color: #e5e7eb;
         }
 
-        .download-btn i {
-            font-size: 1.3rem;
-            color: #60a5fa;
-        }
-
-        .download-info {
-            margin-top: 12px;
-            font-size: 0.75rem;
-            color: #4b5563;
-            text-align: center;
-        }
-
+        /* --- Subscription Box (Config) --- */
         .subscription-box {
-            background: #0a0a0a;
+            background: #070707;
             border: 1px solid #1a1a1a;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .subscription-content {
+            display: flex;
+            gap: 30px;
+            align-items: center; /* Центрирование QR и текста по вертикали */
+        }
+
+        .subscription-info {
+            flex: 1;
         }
 
         .subscription-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
 
-        .subscription-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #d1d5db;
-        }
+        .subscription-name { font-weight: 600; color: #ddd; font-size: 1rem; }
 
         .subscription-status {
             font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 4px;
-            background: #1a1a1a;
-            color: #4ade80;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .subscription-status i {
-            font-size: 0.5rem;
-            color: #4ade80;
-        }
-
-        .subscription-url {
-            background: #050505;
-            border: 1px solid #151515;
+            padding: 5px 12px;
             border-radius: 6px;
-            padding: 12px;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 0.75rem;
-            color: #6b7280;
-            word-break: break-all;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .subscription-url:hover {
-            background: #0a0a0a;
-            border-color: #252525;
-            color: #9ca3af;
-        }
-
-        .btn {
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            color: #d1d5db;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.2s;
-            font-weight: 500;
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .btn:hover {
-            background: #252525;
-            border-color: #3a3a3a;
+        .subscription-url {
+            background: #000;
+            border: 1px solid #1a1a1a;
+            border-radius: 10px;
+            padding: 15px;
+            font-family: 'SF Mono', Consolas, monospace;
+            font-size: 0.8rem;
+            color: #777;
+            word-break: break-all;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-        .btn i { color: #a78bfa; }
+        .subscription-url:hover { color: #aaa; border-color: #333; }
 
-        .btn.copied {
-            background: #1a2a1a;
-            border-color: #2a3a2a;
-            color: #4ade80;
+        /* --- QR Code Styling --- */
+        .qr-wrapper {
+            background: white;
+            padding: 12px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .btn.copied i { color: #4ade80; }
+        #qrcode canvas, #qrcode img {
+            width: 140px !important;
+            height: 140px !important;
+            image-rendering: pixelated;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            color: #ccc;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .btn:hover { background: #252525; color: #fff; }
+        .btn.copied { color: #4ade80; border-color: #4ade80; }
 
         .footer {
-            margin-top: 50px;
-            padding-top: 20px;
+            margin-top: 80px;
+            padding-top: 30px;
             border-top: 1px solid #1a1a1a;
-            font-size: 0.7rem;
-            color: #374151;
+            font-size: 0.8rem;
+            color: #444;
             text-align: center;
+            letter-spacing: 1px;
         }
 
-        @media (max-width: 600px) {
-            .social-links {
-                flex-direction: column;
-                align-items: stretch;
-            }
+        /* --- Mobile Responsive --- */
+        @media (max-width: 650px) {
+            body { padding: 40px 16px; }
             
-            .logo {
-                font-size: 2.5rem;
-                letter-spacing: 4px;
+            .subscription-content {
+                flex-direction: column-reverse;
+                gap: 25px;
             }
+
+            .qr-wrapper { width: 164px; }
+            
+            .section { padding: 25px; }
+
+            .social-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .social-link { width: 100%; justify-content: center; }
+
+            .logo { font-size: 2.8rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        
         <div class="header">
             <h1 class="logo">SHPEKERS</h1>
-            <p class="description">
-                Тестируем...
-            </p>
+            <p class="description">Тестовая площадка и конфигурации для Paradox VPN</p>
         </div>
 
         <div class="social-links">
             <a href="https://t.me/tgshpekers" class="social-link telegram" target="_blank">
-                <i class="fab fa-telegram"></i>
-                <span>Telegram</span>
+                <i class="fab fa-telegram"></i> Telegram
             </a>
             <a href="https://github.com/shpekers" class="social-link github" target="_blank">
-                <i class="fab fa-github"></i>
-                <span>GitHub</span>
+                <i class="fab fa-github"></i> GitHub
             </a>
             <a href="https://shpekers.ru/discord" class="social-link discord" target="_blank">
-                <i class="fab fa-discord"></i>
-                <span>Discord</span>
+                <i class="fab fa-discord"></i> Discord
             </a>
         </div>
 
         <div class="paradox-banner">
-            <div class="paradox-banner-content">
-                <div class="paradox-title">
-                    <i class="fas fa-robot"></i>
-                    Paradox VPN
-                </div>
-                <div class="paradox-desc">
-                    У нас также есть бот в Telegram, где можно приобрести VPN.
-                </div>
-                <a href="https://t.me/Paradox_VPNbot" class="paradox-btn" target="_blank">
-                    <i class="fab fa-telegram"></i>
-                    Перейти в бота
-                </a>
+            <div class="paradox-title">
+                <i class="fas fa-robot"></i> Paradox VPN
             </div>
+            <p class="paradox-desc">
+                Нужен личный высокоскоростной доступ? Наш Telegram-бот поможет с выбором и покупкой.
+            </p>
+            <a href="https://t.me/Paradox_VPNbot" class="paradox-btn" target="_blank">
+                <i class="fab fa-telegram"></i> Перейти в бота
+            </a>
         </div>
 
         <div class="section">
             <div class="section-title">
-                <i class="fas fa-download icon-download"></i>
-                Скачать клиент
+                <i class="fas fa-download icon-download"></i> Скачать клиент
             </div>
-            <div class="section-desc">
-                Paradox Client
-            </div>
+            <p class="section-desc">Официальное приложение Paradox Client для Windows</p>
             
             <a href="https://github.com/shpekers/paradox-client/raw/refs/heads/main/ParadoxSetup.exe" class="download-btn">
-                <i class="fab fa-windows"></i>
-                <span>Скачать Paradox Client</span>
+                <i class="fab fa-windows"></i> 
+                <span>Скачать для Windows 10 / 11</span>
             </a>
-            
-            <div class="download-info">
-                Windows 10/11
-            </div>
         </div>
 
         <div class="section">
             <div class="section-title">
-                <i class="fas fa-link icon-config"></i>
-                Конфигурация VLESS / GRPC
+                <i class="fas fa-link icon-config"></i> Конфигурация VLESS
             </div>
-            <div class="section-desc">
-             
-            </div>
-
+            <p class="section-desc">Используйте ссылку ниже для импорта в любой клиент</p>
+            
             <div class="subscription-box">
-                <div class="subscription-header">
-                    <div class="subscription-name">Тестовая подписка</div>
-                    <div class="subscription-status">
-                        <i class="fas fa-circle"></i>
-                        Активна
+                <div class="subscription-content">
+                    <div class="subscription-info">
+                        <div class="subscription-header">
+                            <span class="subscription-name">Тестовая подписка</span>
+                            <span class="subscription-status">
+                                <i class="fas fa-circle"></i> Активна
+                            </span>
+                        </div>
+                        <div class="subscription-url" id="sub-url" onclick="copySubscription()">
+                            https://shpekers.ru/n-sub-cfg.json
+                        </div>
+                        <button class="btn" id="copy-btn" onclick="copySubscription()">
+                            <i class="far fa-copy"></i> Копировать ссылку
+                        </button>
+                    </div>
+
+                    <div class="qr-wrapper">
+                        <div id="qrcode"></div>
                     </div>
                 </div>
-                
-                <div class="subscription-url" id="sub-url" onclick="copySubscription(event)">
-                    https://shpekers.ru/n-sub-cfg.json
-                </div>
-                
-                <button class="btn" onclick="copySubscription()">
-                    <i class="far fa-copy"></i>
-                    Копировать
-                </button>
             </div>
         </div>
 
         <div class="footer">
-            shpekers.ru
+            &copy; 2024 SHPEKERS.RU
         </div>
     </div>
 
     <script>
-        function copySubscription(event) {
-            if (event) event.stopPropagation();
-            
-            const element = document.getElementById('sub-url');
-            const text = element.textContent.trim();
-            
+        // Генерация четкого QR кода
+        window.addEventListener('DOMContentLoaded', () => {
+            const url = document.getElementById('sub-url').innerText.trim();
+            new QRCode(document.getElementById("qrcode"), {
+                text: url,
+                width: 400, // Высокое разрешение для рендеринга
+                height: 400,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.M
+            });
+        });
+
+        // Функция копирования с визуальным фидбеком
+        function copySubscription() {
+            const text = document.getElementById('sub-url').innerText.trim();
             navigator.clipboard.writeText(text).then(() => {
-                const btn = document.querySelector('.btn');
-                const original = btn.innerHTML;
+                const btn = document.getElementById('copy-btn');
+                const originalContent = btn.innerHTML;
+                
                 btn.innerHTML = '<i class="fas fa-check"></i> Скопировано';
                 btn.classList.add('copied');
                 
                 setTimeout(() => {
-                    btn.innerHTML = original;
+                    btn.innerHTML = originalContent;
                     btn.classList.remove('copied');
                 }, 2000);
             });
