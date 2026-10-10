@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн Радио Плеер</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .radio-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .cover-art {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #6366f1, #a855f7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+            position: relative;
+        }
+
+        .cover-art svg {
+            width: 70px;
+            height: 70px;
+            fill: #fff;
+        }
+
+        /* Анимация пульсации при воспроизведении */
+        .cover-art.playing {
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.5); }
+            70% { box-shadow: 0 0 0 20px rgba(168, 85, 247, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+        }
+
+        .badge.active .dot {
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes blink {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .play-btn {
+            background: #fff;
+            border: none;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            background: #f1f5f9;
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .play-btn svg {
+            width: 26px;
+            height: 26px;
+            fill: #0f172a;
+            margin-left: 3px; /* Оптическое выравнивание иконки play */
+        }
+
+        .play-btn.playing svg {
+            margin-left: 0;
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 15px;
+            border-radius: 12px;
+        }
+
+        .volume-container svg {
+            width: 20px;
+            height: 20px;
+            fill: #94a3b8;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #334155;
+            border-radius: 3px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="radio-card">
+        <div class="badge" id="liveBadge">
+            <span class="dot"></span>
+            <span id="badgeText">Прямой эфир</span>
+        </div>
+
+        <div class="cover-art" id="coverArt">
+            <!-- Иконка радиоволн -->
+            <svg viewBox="0 0 24 24">
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+        </div>
+
+        <h1>Kalina FM</h1>
+        <p class="subtitle" id="statusText">Нажмите Play для прослушивания</p>
+
+        <!-- Аудио поток -->
+        <audio id="audioPlayer" src="https://stream.zeno.fm/8z9zpjrtf1ytv" preload="none"></audio>
+
+        <div class="controls">
+            <button class="play-btn" id="playBtn" title="Воспроизвести">
+                <!-- Иконка Play (по умолчанию) -->
+                <svg id="playIcon" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="volume-container">
+            <svg viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.8">
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const coverArt = document.getElementById('coverArt');
+        const liveBadge = document.getElementById('liveBadge');
+        const statusText = document.getElementById('statusText');
+
+        // SVG иконки для Play и Pause
+        const playSVG = '<path d="M8 5v14l11-7z"/>';
+        const pauseSVG = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+
+        let isPlaying = false;
+
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                // Остановка радио
+                audio.pause();
+                // Сбрасываем src, чтобы при повторном включении радио играло с текущего момента (LIVE), а не с буфера
+                audio.src = ''; 
+                audio.src = 'https://stream.zeno.fm/8z9zpjrtf1ytv';
+                
+                playIcon.innerHTML = playSVG;
+                playBtn.classList.remove('playing');
+                coverArt.classList.remove('playing');
+                liveBadge.classList.remove('active');
+                statusText.innerText = 'Пауза';
+                isPlaying = false;
+            } else {
+                // Запуск радио
+                statusText.innerText = 'Подключение...';
+                audio.play().then(() => {
+                    playIcon.innerHTML = pauseSVG;
+                    playBtn.classList.add('playing');
+                    coverArt.classList.add('playing');
+                    liveBadge.classList.add('active');
+                    statusText.innerText = 'В эфире';
+                    isPlaying = true;
+                }).catch(error => {
+                    console.error("Ошибка воспроизведения:", error);
+                    statusText.innerText = 'Ошибка загрузки потока';
+                });
+            }
+        });
+
+        // Регулировка громкости
+        volumeSlider.addEventListener('input', (e) => {
+            audio.volume = e.target.value;
+        });
+
+        // Установка начальной громкости
+        audio.volume = volumeSlider.value;
+    </script>
+</body>
+</html>
